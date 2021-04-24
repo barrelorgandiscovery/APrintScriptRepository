@@ -1,0 +1,92 @@
+
+/**
+  permit to create midi event flow, divided by notes
+*/
+
+
+
+import org.barrelorgandiscovery.model.steps.scripts.*;
+import org.barrelorgandiscovery.model.*;
+import org.barrelorgandiscovery.model.type.*;
+
+import org.barrelorgandiscovery.virtualbook.*
+import org.barrelorgandiscovery.xml.*
+
+import org.barrelorgandiscovery.virtualbook.transformation.importer.*
+import org.barrelorgandiscovery.timed.*
+
+import java.io.File;
+
+
+import org.barrelorgandiscovery.tools.MidiHelper;
+
+class MidiParameter {
+    int midiNote;
+    String name;
+    def parameter;
+}
+
+class T extends ModelGroovyScript {
+
+    ////////////////////////////////////////////////
+    
+    
+    def fromMidiCode = 0
+    def toMidiCode = 127
+
+    def exportedChannel = 0
+
+    ///////////////////////////////////////////////
+
+   def console
+
+   def midiInParameters
+
+   // cette fonction est appeleé par le model editor
+   // pour connaitre les paramètres et leur type
+   ModelParameter[] configureParameters() {
+
+         midiInParameters = constructParameterMapping(fromMidiCode,toMidiCode)
+        def p = [ newParameter(false,"outputEvents",new GenericSimpleType(Collection.class, [ MidiNote.class ] as Class[]))]
+        p.addAll( midiInParameters.values().collect { it.parameter })
+        p as ModelParameter[]
+   }
+
+   Map constructParameterMapping(int from, int to) {
+       def o = [:]
+       for(int i = from; i < to ; i ++) {
+           String pname = MidiHelper.midiLibelle(i)
+           def p = new MidiParameter();
+           p.parameter = newParameter(true, pname, new GenericSimpleType(Collection.class, [  ITimedLength.class ] as Class[] ));
+           p.parameter.optional = true;
+           p.midiNote = i;
+           p.name = pname;
+           o[pname]= p;
+       }
+       return o;
+   }
+
+   Map execute(Map m) {
+
+       List<MidiNote> result = []
+       
+       midiInParameters.each { k,v ->
+            if (m.containsKey(k)) {
+                console.print("read elements")
+                def d = m[k]
+                
+                // MidiNote(long timestamp, long longueur, int midinote, int track, int channel)
+                result.addAll( d.collect { new MidiNote(it.timestamp, it.timeLength, v.midiNote, 0, exportedChannel) })
+            
+            }
+       
+       }
+
+       // on retourne le paramètre "book" contenant un objet Virtualbook
+       return ["outputEvents": result]
+   }
+
+}
+new T(console:out) // le script retourne une instanciation de la classe
+
+

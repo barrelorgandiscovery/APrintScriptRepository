@@ -1,0 +1,39 @@
+import org.barrelorgandiscovery.model.steps.scripts.*;
+import org.barrelorgandiscovery.model.*;
+import org.barrelorgandiscovery.model.type.*;
+
+import org.barrelorgandiscovery.virtualbook.*
+import org.barrelorgandiscovery.xml.*
+
+import org.barrelorgandiscovery.virtualbook.transformation.importer.*
+
+import java.io.File;
+
+class T extends ModelGroovyScript {
+
+   def console
+
+   // cette fonction est appeleé par le model editor
+   // pour connaitre les paramètres et leur type
+   ModelParameter[] configureParameters() {
+       [ newParameter(true,"evenements midi",new GenericSimpleType(Collection.class, [ MidiNote.class ] as Class[]))]
+   }
+
+   Map execute(Map m) {
+      
+       List<MidiNote> notes = m["evenements midi"]
+       def mf = new MidiFile()
+       mf.addAll(notes)
+       
+       def f = File.createTempFile("export", ".mid");
+       MidiFileIO.write_midi_0(mf, f)
+       
+      
+       console.println("output file ${f}")
+       // on retourne le paramètre "book" contenant un objet Virtualbook
+       return [:]
+   }
+
+}
+new T(console:out) // le script retourne une instanciation de la classe
+
