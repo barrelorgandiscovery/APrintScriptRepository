@@ -1,0 +1,65 @@
+import org.barrelorgandiscovery.virtualbook.VirtualBook
+
+
+import groovy.aprint.transform.*
+import groovy.aprint.tools.*
+
+import org.barrelorgandiscovery.scale.*
+import org.barrelorgandiscovery.tools.MidiHelper
+
+import javax.swing.*;
+import groovy.swing.SwingBuilder;
+
+def moveTracks(virtualbook, double size) {
+    
+    use (NoteCategory, ScaleCategory, HoleCategory) {
+        
+        scale = virtualbook.scale
+        def vb = new VirtualBook(virtualbook.scale)
+        cpt = 0
+        def n = virtualbook.scale.trackNb
+        virtualbook.getHolesCopy().each {
+            if ((it.track % 2) == 0)  {
+                vb.addHole(it.beginAt(it.timestamp + scale.mmToTime(size)))
+            } else {
+                vb.addHole(it)
+            }
+        
+        } 
+        
+        pianoroll.startEventTransaction()
+        pianoroll.undoStack.push(new org.barrelorgandiscovery.gui.aedit.GlobalVirtualBookUndoOperation(virtualbook, "chevauchement", pianoroll))
+        pianoroll.setVirtualBook(vb)
+        pianoroll.endEventTransaction()
+      
+        
+        
+    }
+}
+
+
+
+def sb = new SwingBuilder()
+
+def e = sb.textField(text:"5.0")
+def b = sb.button(label:"Décaler les notes impaires", actionPerformed:{
+    try {
+      println("button clicked, read the size")
+      double value = Double.parseDouble(e.text)
+      
+      moveTracks(pianoroll.virtualBook, value)
+      
+      
+      
+    } catch(Exception ex) {
+      println(ex);
+    }
+})
+
+def f = GUIHelper.showFrame( ["distance de déplacement": e ], b)
+
+f.defaultCloseOperation = JFrame.DISPOSE_ON_CLOSE
+f.size = [300,200]
+f.visible = true
+
+void

@@ -1,0 +1,34 @@
+
+import groovy.aprint.*
+import groovy.aprint.transform.*
+import org.barrelorgandiscovery.virtualbook.*
+
+use (HoleCategory, ScaleCategory) {
+
+    long l = virtualbook.scale.mmToTime(1.5d)
+
+    def h = virtualbook.scale.helper
+    def hls = virtualbook.holesCopy
+
+    // on les agrandits
+    
+    hls.each {
+    
+    
+        def next =  virtualbook.findHoles(it.timestamp + it.length + 1, l, it.track, it.track)
+        if (next) {
+        
+           virtualbook.removeHole(it)
+           for (r in next) {
+               it = new Hole(it.track, it.timestamp, Math.max((r.timestamp + r.length) - it.timestamp, it.length   )) 
+               virtualbook.removeHole(r)
+           }
+           virtualbook.addHole(it)
+        }
+    
+    
+    }
+
+    pianoroll.repaint()
+    void
+}

@@ -1,0 +1,32 @@
+
+import org.barrelorgandiscovery.virtualbook.*
+
+scale = virtualbook.scale
+vb = new VirtualBook(scale)
+
+cutmm = 10.0d
+
+virtualbook.orderedHolesCopy.each { it -> 
+           try {
+          
+                xmm = scale.timeToMM(it.timestamp)
+                lengthmm = scale.timeToMM(it.length)
+                sizemm = lengthmm
+                
+                while (sizemm > cutmm) {
+                
+                    vb.addHole(new Hole(it.track, scale.mmToTime(xmm), scale.mmToTime(cutmm)))
+                    xmm = xmm + cutmm
+                    sizemm = sizemm - cutmm
+                }
+                vb.addHole(new Hole(it.track, scale.mmToTime(xmm), scale.mmToTime(sizemm)))
+        } catch(Throwable e)
+        {
+            print e
+        }
+}
+
+services.newVirtualBook(vb, currentinstrument)
+
+
+void

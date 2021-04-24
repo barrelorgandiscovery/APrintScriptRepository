@@ -1,0 +1,19 @@
+import org.barrelorgandiscovery.virtualbook.VirtualBook
+
+
+import groovy.aprint.transform.*
+import org.barrelorgandiscovery.scale.*
+import org.barrelorgandiscovery.tools.MidiHelper
+
+use (NoteCategory, ScaleCategory, HoleCategory) {
+    
+    def vb = new VirtualBook(virtualbook.scale)
+    cpt = 0
+    def n = virtualbook.scale.trackNb
+    virtualbook.getHolesCopy().each {
+        vb.addHole(it.changeTrack(n-1-it.track))
+
+    } 
+    
+    services.newVirtualBook(vb, currentinstrument)
+}

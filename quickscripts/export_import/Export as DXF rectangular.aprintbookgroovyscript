@@ -1,0 +1,47 @@
+// test d'export DXF avec dexefer
+
+import org.dexefer.*
+import org.dexefer.entities.*
+import org.dexefer.tables.*
+
+// test the existence of dexefer.jar file in ~/aprintstudio folder
+print org.dexefer.DXFFile.class
+
+
+def pt(x, y) {
+    return new DXFPoint(x, y)
+}
+
+def line(from, to) {
+    return new Line(from, to)
+}
+
+
+def d = new DXFFile()
+d.tables.add(new VPort(pt(0,0), 1))
+
+def scale = virtualbook.scale
+
+virtualbook.holesCopy.each {
+
+   double x = it.timestamp
+   double x2 = x + it.timeLength
+   double xmm = scale.timeToMM(x as Long)
+   double x2mm = scale.timeToMM(x2 as Long)
+
+   double y = scale.firstTrackAxis + it.track * scale.intertrackHeight
+   double h = scale.trackWidth
+
+   d.entities.add(line(pt(xmm,y-h/2),pt(x2mm,y-h/2)))
+   d.entities.add(line(pt(x2mm,y-h/2),pt(x2mm,y+h/2)))   
+   d.entities.add(line(pt(x2mm,y+h/2),pt(xmm,y+h/2)))   
+   d.entities.add(line(pt(xmm,y+h/2),pt(xmm,y-h/2)))
+
+}
+
+def f = File.createTempFile("test", ".dxf")
+def fos = new FileOutputStream(f)
+d.write(fos)
+fos.close()
+
+f.absolutePath

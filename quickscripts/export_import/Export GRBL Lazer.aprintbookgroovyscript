@@ -1,0 +1,235 @@
+// export GRBL laser, 
+// pour Baraffe.yann@gmail.com
+
+// notes informatives et d'expérience sur GRBL laser : 1.1
+
+// export mécanique (on prends le contour de la note), 
+// pour les pneumatiques, il faut créer des petits trous associé à la note
+
+// modifié le 23/03/2020 -> prise en compte des deux vitesses de déplacement
+// modifié le 24/03/2020 -> ajustement pilotage en fonction de GRBL 1.1
+
+import groovy.aprint.tools.*
+import groovy.swing.*
+import javax.swing.*
+import java.awt.*
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////
+// gestion de la fenetre
+
+def sb = new SwingBuilder()
+
+puissance = sb.textField(text:"1000", columns:30)
+vitesse = sb.textField(text:"6000", columns:30)
+vitesseLaser = sb.textField(text:"350", columns:30)
+taillePage = sb.textField(text:"160.0", columns:30)
+
+
+b = sb.button(label:"Exporter dans un fichier ...", actionPerformed : { 
+    try { 
+    
+            Integer.parseInt(puissance.text)
+            Integer.parseInt(vitesse.text)
+            Integer.parseInt(vitesseLaser.text)
+            Double.parseDouble(taillePage.text)
+    
+            c = { file ->
+               
+                b.text = "En cours ...."
+                b.enabled = false
+              
+                f.setCursor (Cursor.getPredefinedCursor (Cursor.WAIT_CURSOR));
+                SwingUtilities.invokeLater({
+                    try {
+                        filename = executeExport(file); 
+                        print("Done :${filename}" ); 
+                        def j = new javax.swing.JOptionPane();
+                        j.showMessageDialog( null, "Le fichier a été créé :${filename}", 
+                                              "Export GCODE Lazer", JOptionPane.PLAIN_MESSAGE);
+                    } catch(Exception e) {
+                         print(e) 
+                    }    
+                    b.text = "Exporter dans un fichier ..."
+                    f.setCursor (Cursor.getPredefinedCursor (Cursor.DEFAULT_CURSOR));
+                    b.enabled = true
+                })
+            }
+            
+          
+            JFileChooser fc = new JFileChooser();
+            int result = fc.showSaveDialog(null);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File theFile = fc.selectedFile
+                if (theFile != null) {
+                    print "start créer le fichier ${theFile}\n"
+                    c(theFile);
+                }
+            }
+                    
+            
+     } catch(Exception e) { 
+            print(e);
+            j.showMessageDialog( null, "Une erreur a été rencontrée,regardez la console", 
+                          "Export GCODE Lazer", JOptionPane.ERROR_MESSAGE);
+           
+     }  
+   })
+   
+f = GUIHelper.showFrame(["Puissance Lazer (parametre SXXX)":puissance, 
+                         "Vitesse Deplacement (Parametre FXXX)":vitesse,
+                         "Vitesse Deplacement en mode lazer FXXX":vitesseLaser,
+                         "Largeur des pages (tirets) (mm)":taillePage ], b)
+
+f.title="Export du fichier " + virtualbook.metadata?.name
+
+
+///////////////////////////////////////////////////////////////////////////////////////
+// traitement du carton, en export
+
+// liste contenant les ordres de sortie (resultat)
+
+emit = { s -> 
+   
+
+};
+
+// delta
+@Immutable class Delta {
+   double dx;
+   double dy;
+}
+
+// absolute position
+class Pos {
+    public Pos(double x, double y) {
+        this.x = x;
+        this.y = y
+    }
+    double x;
+    double y;
+    Delta delta(Pos newPos) {
+        return new Delta(dx: newPos.x - this.x,dy: newPos.y - this.y);
+    }
+}
+
+
+Pos currentPos = null
+
+
+def homing() {
+    emit("\$H")
+    emit("G10 P0 L20 X0 Y0 Z0")
+    emit("G28")
+    emit("G10 P0 L20 X0")
+    emit("F5000")
+}
+
+// fonction de déplacement
+def moveTo(Pos p) {
+    emit("G1 X${p.y} Y${p.x}")
+    currentPos = p
+}
+
+def lazerTo(Pos newPos) {
+    assert currentPos != null
+    
+    emit("G1 X${newPos.y} Y${newPos.x} F" + vitesse.text.trim())
+    currentPos = newPos
+}
+
+def startLazer() {
+    emit("M3") // activate the lazer
+    emit("S" + puissance.text.trim()) // power
+    emit("F" + vitesseLaser.text.trim()) // speed
+    
+}
+
+def stopLazer() {
+     emit("S0")
+     emit("M5") // off lazer
+     emit("F" + vitesse.text.trim())
+}
+
+def tiretsLargeur(double x, double largeur) {
+
+    stopLazer()
+    double y = 0;
+    double tiretLargeur = 5;
+    while (y < largeur) {
+        y = y + 5
+        moveTo(new Pos(x, y))
+        startLazer()
+        y = y + 5
+        lazerTo(new Pos(x, y))
+        stopLazer()
+    }
+}
+    
+// procedure principale
+//
+def executeExport(File file) {
+
+    // on récupère la gamme du carton
+    def scale = virtualbook.scale
+    
+    file.withWriter { w -> 
+        // emit in the file
+        emit = { s-> 
+            w.write(s)
+            w.write("\n")
+        }
+    
+    //////////////////////////////////////////////////////////////
+    // export carton
+    // pour chaque trou
+    
+    homing()
+    def tPage = Double.parseDouble(taillePage.text)
+    assert tPage > 0.0
+    nextPage = tPage
+    
+    // on parcours les trou triés par timestamp (date de début)
+    virtualbook.orderedHolesCopy.each {
+    try {
+       double x = it.timestamp
+       double x2 = x + it.timeLength
+       double xmm = scale.timeToMM(x as Long)
+       double x2mm = scale.timeToMM(x2 as Long)
+    
+       double y = scale.firstTrackAxis + it.track * scale.intertrackHeight
+       double h = scale.trackWidth
+    
+       // deplacement sur le trou
+       moveTo(new Pos(xmm,y-h/2))
+       
+       startLazer()
+       lazerTo(new Pos(x2mm,y-h/2))
+       lazerTo(new Pos(x2mm,y+h/2))
+       lazerTo(new Pos(xmm,y+h/2))
+       lazerTo(new Pos(xmm,y-h/2))
+       stopLazer();
+       
+       if (x > nextPage) {
+          tiretsLargeur(nextPage, scale.width);
+          nextPage += tPage
+       }
+       } catch(Exception e) {
+           print("error in processing ${it}")
+           print(e)
+           throw e
+       }
+    }
+    
+    } // with writer
+ 
+     file.absolutePath
+}
+
+
+// affiche la fenetre
+f.pack()
+f.visible=true
+
+void

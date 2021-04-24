@@ -1,0 +1,4 @@
+
+def ins = services.repository.getInstrument("50 JazzBand Limonaire 2018")
+
+services.newVirtualBook(virtualbook, ins)

@@ -1,0 +1,11 @@
+
+import org.barrelorgandiscovery.virtualbook.*
+
+def ins = services.repository.getInstrument('49 Limonaire')
+assert ins != null;
+
+
+vb = new VirtualBook(ins.scale)
+vb.addHole(virtualbook.getHolesCopy())
+
+services.newVirtualBook(vb, ins)

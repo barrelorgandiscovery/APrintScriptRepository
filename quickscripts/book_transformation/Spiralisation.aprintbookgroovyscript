@@ -1,0 +1,50 @@
+
+import groovy.aprint.transform.*
+import org.barrelorgandiscovery.virtualbook.*
+
+r0 = 30.0
+e = 0.1
+
+def theta(p) {
+    
+    def delta = r0*r0 + 4.0 * e / (2*Math.PI) * p
+    assert delta > 0
+    
+    return ( -r0 + Math.sqrt(delta) )/(e/Math.PI)
+    
+}
+
+def deltaS(theta) {
+   return e * theta * theta / (2 * Math.PI)
+}
+
+// verification calculs
+/*
+distance = 2000
+t = theta(Math.PI*2*r0)
+println(t)
+println(deltaS(t))
+*/
+
+l = []
+use(HoleCategory) {
+    def scale = virtualbook.scale
+    virtualbook.holesCopy.each {
+        def h = it
+        def start = scale.timeToMM(h.timestamp)
+        def end = scale.timeToMM(h.timestamp + h.length)
+        start = start + deltaS(theta(start))
+        end = end + deltaS(theta(end))
+        h = h.newTs(scale.mmToTime(start))
+        h = h.newLength(scale.mmToTime(end - start))  
+        l << h
+    } 
+}
+
+vb = new VirtualBook(virtualbook.scale)
+l.each {
+    vb.addHole(it)
+}    
+
+services.newVirtualBook(vb,currentinstrument)
+void

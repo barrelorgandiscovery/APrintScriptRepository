@@ -1,0 +1,21 @@
+import org.barrelorgandiscovery.virtualbook.*
+
+long max = Long.MIN_VALUE
+
+virtualbook.getHolesCopy().each {
+    max = Math.max(it.timestamp + it.length, max)
+}
+
+def v = new VirtualBook(virtualbook.scale)
+virtualbook.getHolesCopy().each {
+    v.addHole( new Hole(it.track, max - it.timestamp - it.length, it.length))
+}
+
+virtualbook.listMarkers().each { m ->
+    v.addEvent(new MarkerEvent(max - m.timestamp, m.markerName))
+
+}
+
+services.newVirtualBook(v, currentinstrument)
+
+max

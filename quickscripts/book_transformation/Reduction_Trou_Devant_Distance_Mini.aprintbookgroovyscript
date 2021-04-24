@@ -1,0 +1,46 @@
+import org.barrelorgandiscovery.virtualbook.*
+import javax.swing.*
+
+// selectionner les trous trop proche
+String d = JOptionPane.showInputDialog(null, "Distance mini", "5.0")
+
+if (!d) {
+    return
+}
+
+double distanceMini = Double.parseDouble(d)
+if (distanceMini <=0) {
+    throw new Exception("la distance doit être positive")
+}
+
+def scale = currentinstrument.scale
+def distance = scale.mmToTime(distanceMini)
+
+def holes = virtualbook.holesCopy
+
+def ret = []
+toreplace = [:]
+
+pianoroll.clearSelection()
+
+holes.each { i ->
+    def timestamp = i.timestamp
+    def length = i.length
+    h = virtualbook.findHoles(timestamp + length + 1, distance, i.track, i.track)
+    if (h) {
+       h.each { 
+           def toreduce = it.timestamp - distance - i.timestamp
+           // pianoroll.addToSelection(i)
+           toreplace[i] = new Hole(i.track, i.timestamp, toreduce) 
+       }
+       ret = ret + h
+    }
+}
+
+/// remplacement des elements
+toreplace.each { k,v -> virtualbook.removeHole(k); virtualbook.addHole(v); pianoroll.addToSelection(v); }
+
+pianoroll.repaint()
+
+// liste les trous modifiés (ancien -> nouveau)
+toreplace

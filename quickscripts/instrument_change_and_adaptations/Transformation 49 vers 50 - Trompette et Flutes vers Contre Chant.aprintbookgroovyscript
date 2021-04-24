@@ -1,0 +1,44 @@
+import groovy.aprint.transform.*
+import org.barrelorgandiscovery.scale.*
+import org.barrelorgandiscovery.tools.MidiHelper
+
+use (NoteCategory, ScaleCategory, HoleCategory)
+{
+    def h49 = virtualbook.scale.helper
+
+    ins50 = services.repository.getInstrument("50 JazzBand Limonaire 2")
+    assert ins50 != null
+
+
+    def t = h49.transformFor(ins50.scale)
+    h50 = ins50.scale.helper
+
+    t.map( h49.tracks(h49.notes(h49.BASS),h49.BASS), h50.tracks(h50.notes(h50.BASS), h50.BASS)  ) 
+    t.map( h49.tracks(h49.notes(h49.ACCOMPAGNMENT),h49.ACCOMPAGNMENT), h50.tracks(h50.notes(h50.ACCOMPAGNMENT), h50.ACCOMPAGNMENT)  ) 
+    t.map( h49.tracks(h49.notes(h49.MELODY),h49.MELODY), h50.tracks(h50.notes(h50.MELODY), h50.MELODY)  ) 
+
+    print h49.notes(h49.MELODY3)
+    print h50.notes(h50.MELODY3)
+
+    t.map( h49.tracks(h49.notes(h49.MELODY3),h49.MELODY3), h50.tracks(h49.notes(h49.MELODY3), h50.MELODY3)  ) 
+
+
+    def t2 = h49.transformFor(ins50.scale)
+    t2.map( h49.tracks(h49.notes(h49.COUNTER_MELODY),h49.COUNTER_MELODY), h50.tracks(h49.notes(h49.COUNTER_MELODY), h50.MELODY3)  ) 
+
+
+
+    t.map( h49.track(29 - 1)  ,  h50.track( 38 - 1)) 
+    t.map( h49.track(17 - 1) ,h50.track( 40 - 1))
+    t.map( h49.track(5 - 1), h50.track( 39 - 1))
+
+    
+
+     def result = t.transform(virtualbook) // on transform le carton, result contient le carton transformé et la liste des erreurs de transcriptions
+     
+     def res2 = t2.transform(virtualbook)
+     result.virtualbook.addHole(res2.virtualbook.getHolesCopy())
+   
+     services.newVirtualBook(result.virtualbook, ins50); // affiche le carton dont on a 
+
+}
