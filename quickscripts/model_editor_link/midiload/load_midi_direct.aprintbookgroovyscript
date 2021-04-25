@@ -1,0 +1,45 @@
+
+// execution model editor - inline in a script
+
+import org.barrelorgandiscovery.model.*
+import org.barrelorgandiscovery.gui.etl.*
+import java.util.*
+
+def registry = new DefaultModelStepRegistry();
+def repository = services.getRepository()
+def asyncj = services.getAsyncJobs()
+
+def me = new ModelEditor(registry, repository, asyncj, [:])
+
+me.load(new FileInputStream(new File("/home/use/APrintScriptRepository/quickscripts/model_editor_link/midiload/model.model")));
+me.console = console
+me.validateState()
+
+
+// affichage du model editor chargé
+import javax.swing.*
+import java.awt.*
+
+
+def f = new JFrame()
+f.layout = new BorderLayout()
+f.contentPane.add(me, BorderLayout.CENTER)
+f.size = [800,400]
+f.visible = true
+
+// run it, we can pass some input terminal parameter values, in the hash
+println(me.execute([:]))
+
+while (me.running) {
+   Thread.sleep(1000)
+}
+
+def vb = me.getExecutedTerminalValueByName("vbout")
+// println(vb)
+// println(vb.class)
+// println(vb[0].class)
+
+virtualbook.clear()
+virtualbook.addHoles(vb)
+
+

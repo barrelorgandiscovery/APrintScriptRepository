@@ -1,0 +1,43 @@
+import org.barrelorgandiscovery.gui.aedit.*
+import org.barrelorgandiscovery.virtualbook.*
+
+import javax.swing.*
+import java.awt.event.*
+import java.awt.*
+
+import org.barrelorgandiscovery.gui.aedit.toolbar.*
+import org.barrelorgandiscovery.gui.aprintng.*
+
+
+println(services.version)
+if (services.version < "2020.12.666") {
+    throw new Exception("bad version, 2020.12.666 minimum required")
+}
+
+
+
+// création de la barre d'outils
+
+def tb = new APrintNGToolAwareToolbar("test", pianoroll)
+
+
+def t = new SelectionTool( pianoroll, { println("selection done :") } as SelectionTool.SelectionListener )
+// ajout de l'outil dans la barre
+tb.addTool(t,"selection")
+
+def st = new HoleSelectTool( pianoroll, pianoroll.undoStack, { println("hole selection changed") } as HoleSelectTool.HoleSelectToolListener);
+tb.addTool(st, "hole selection example")
+
+
+// ajout de la barre dans l'interface
+toolbarspanel.add(tb);
+
+toolbarspanel.parent.revalidate()
+toolbarspanel.parent.repaint()
+
+
+void
+
+
+
+
