@@ -1,0 +1,87 @@
+import org.barrelorgandiscovery.scale.*
+import org.barrelorgandiscovery.virtualbook.*
+import org.barrelorgandiscovery.xml.*
+import org.barrelorgandiscovery.editableinstrument.*
+import org.barrelorgandiscovery.groovy.*
+import org.barrelorgandiscovery.virtualbook.transformation.importer.*
+import java.io.*
+import groovy.aprint.tools.*
+
+def exportMidWithFirstOutputExportScript(File file) {
+    // read the virtualbook
+    def result = VirtualBookXmlIO.read(file)
+    
+    def preferredInstrumentName = result.preferredInstrumentName 
+    
+    def ins = services.repository.getInstrument(preferredInstrumentName)
+    
+    def insm = services.repository.findRepositoryAssociatedTo(ins)
+
+    if (insm) {
+    
+        def ename= insm.findAssociatedEditableInstrument(ins.name)
+        println ename
+        def inse = insm.editableInstrumentManager.loadEditableInstrument(ename)
+        
+        // grab the export script associated to the editable instrument
+        def e = inse.scripts.find { it -> it.type == InstrumentScript.InstrumentScriptType.MIDI_OUTPUT_SCRIPT }
+            if (e) {
+            assert e != null
+            
+            // prepare the export output
+            def b = new Binding();
+            b.setVariable("virtualbook", result.virtualBook)
+            b.setProperty("out", out)
+            
+            def aprintb = new APrintGroovyShell(b);
+            
+            // execute script
+            def mf = aprintb.evaluate(e.content)
+            
+            // write the content into the file
+            def fos = new FileOutputStream(new File(file.parentFile, file.name + ".mid"))
+            MidiFileIO.write_midi_0((MidiFile) mf, fos);
+            fos.close()
+        }
+    }
+}
+
+// choose folder
+
+
+new ChooseFolderFrame(title: "Choose Folder to Export in Midi",
+    action: {
+        folder -> 
+            try {
+               if (!folder) {
+                  return
+               }
+               def files = folder.listFiles()
+               def bookfiles = files.findAll { f-> f.name.endsWith(".book") }
+               
+               bookfiles.each { 
+                 bookf ->
+                    try {
+                        exportMidWithFirstOutputExportScript(bookf) 
+                        println("==== exported ${bookf}.mid")
+                    } catch(Throwable te) {
+                        println("error in handling ${bookf} :" + te)
+                    }                 
+               } // each
+            } catch (Throwable t) {
+                println("Error in execution : " + t)
+                println(t)
+            
+            }
+      }
+
+).show()
+
+void
+
+// File folderToExport = new File("/home/use/aprint_contributions/plf/2021-08_export_script")
+// File file = new File(folderToExport, "sample.book")
+
+
+
+

@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns:virtualBook title="" xmlns:ns="http://barrelorgandiscovery.org/virtualbook/2016">
+  <ns:metadata>
+    <ns:Author xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+    <ns:Arranger xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+    <ns:Genre xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+    <ns:DesignedInstrumentName>50 Gavioli Klauser</ns:DesignedInstrumentName>
+    <ns:Description xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+  </ns:metadata>
+  <ns:scale name="50 Gavioli Klauser">
+    <ns:infos>
+      <ns:contact xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+      <ns:state>INPROGRESS</ns:state>
+      <ns:description>null</ns:description>
+    </ns:infos>
+    <ns:definition>
+      <ns:speed>60.0</ns:speed>
+      <ns:width>200.0</ns:width>
+      <ns:firsttrackdistance>20.0</ns:firsttrackdistance>
+      <ns:intertrackdistance>3.5</ns:intertrackdistance>
+      <ns:defaulttrackheight>4.1</ns:defaulttrackheight>
+      <ns:tracks>
+        <ns:track xsi:type="ns:TrackDrum" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>0</ns:no>
+          <ns:delay>4.0</ns:delay>
+          <ns:fixedlength>4.0</ns:fixedlength>
+          <ns:mididef>ACOUSTIC_BASS_DRUM</ns:mididef>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>1</ns:no>
+          <ns:note>C6</ns:note>
+          <ns:pipestopsetname>CHANT3</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>2</ns:no>
+          <ns:note>B5</ns:note>
+          <ns:pipestopsetname>CHANT3</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>3</ns:no>
+          <ns:note>A#5</ns:note>
+          <ns:pipestopsetname>CHANT3</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>4</ns:no>
+          <ns:note>A5</ns:note>
+          <ns:pipestopsetname>CHANT3</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>5</ns:no>
+          <ns:note>G5</ns:note>
+          <ns:pipestopsetname>CHANT3</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>6</ns:no>
+          <ns:note>F#5</ns:note>
+          <ns:pipestopsetname>CHANT3</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>7</ns:no>
+          <ns:note>F5</ns:note>
+          <ns:pipestopsetname>CHANT3</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>8</ns:no>
+          <ns:note>E5</ns:note>
+          <ns:pipestopsetname>CHANT3</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>9</ns:no>
+          <ns:note>D5</ns:note>
+          <ns:pipestopsetname>CHANT3</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>10</ns:no>
+          <ns:note>C#5</ns:note>
+          <ns:pipestopsetname>CHANT3</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>11</ns:no>
+          <ns:note>C5</ns:note>
+          <ns:pipestopsetname>CHANT3</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>12</ns:no>
+          <ns:note>B6</ns:note>
+          <ns:pipestopsetname>CHANT</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>13</ns:no>
+          <ns:note>A#6</ns:note>
+          <ns:pipestopsetname>CHANT</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>14</ns:no>
+          <ns:note>A6</ns:note>
+          <ns:pipestopsetname>CHANT</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>15</ns:no>
+          <ns:note>G#6</ns:note>
+          <ns:pipestopsetname>CHANT</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>16</ns:no>
+          <ns:note>G6</ns:note>
+          <ns:pipestopsetname>CHANT</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>17</ns:no>
+          <ns:note>F#6</ns:note>
+          <ns:pipestopsetname>CHANT</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>18</ns:no>
+          <ns:note>F6</ns:note>
+          <ns:pipestopsetname>CHANT</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>19</ns:no>
+          <ns:note>E6</ns:note>
+          <ns:pipestopsetname>CHANT</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>20</ns:no>
+          <ns:note>D#6</ns:note>
+          <ns:pipestopsetname>CHANT</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>21</ns:no>
+          <ns:note>D6</ns:note>
+          <ns:pipestopsetname>CHANT</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>22</ns:no>
+          <ns:note>C#6</ns:note>
+          <ns:pipestopsetname>CHANT</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>23</ns:no>
+          <ns:note>C6</ns:note>
+          <ns:pipestopsetname>CHANT</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>24</ns:no>
+          <ns:note>B5</ns:note>
+          <ns:pipestopsetname>CHANT</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>25</ns:no>
+          <ns:note>A#5</ns:note>
+          <ns:pipestopsetname>CHANT</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>26</ns:no>
+          <ns:note>A5</ns:note>
+          <ns:pipestopsetname>CHANT</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>27</ns:no>
+          <ns:note>G#5</ns:note>
+          <ns:pipestopsetname>CHANT</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>28</ns:no>
+          <ns:note>G5</ns:note>
+          <ns:pipestopsetname>CHANT</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>29</ns:no>
+          <ns:note>F#5</ns:note>
+          <ns:pipestopsetname>ACCOMPAGNEMENT</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>30</ns:no>
+          <ns:note>F5</ns:note>
+          <ns:pipestopsetname>ACCOMPAGNEMENT</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>31</ns:no>
+          <ns:note>E5</ns:note>
+          <ns:pipestopsetname>ACCOMPAGNEMENT</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>32</ns:no>
+          <ns:note>D5</ns:note>
+          <ns:pipestopsetname>ACCOMPAGNEMENT</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>33</ns:no>
+          <ns:note>C#5</ns:note>
+          <ns:pipestopsetname>ACCOMPAGNEMENT</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>34</ns:no>
+          <ns:note>C5</ns:note>
+          <ns:pipestopsetname>ACCOMPAGNEMENT</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>35</ns:no>
+          <ns:note>B4</ns:note>
+          <ns:pipestopsetname>ACCOMPAGNEMENT</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>36</ns:no>
+          <ns:note>A#4</ns:note>
+          <ns:pipestopsetname>ACCOMPAGNEMENT</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>37</ns:no>
+          <ns:note>A4</ns:note>
+          <ns:pipestopsetname>ACCOMPAGNEMENT</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>38</ns:no>
+          <ns:note>G4</ns:note>
+          <ns:pipestopsetname>ACCOMPAGNEMENT</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>39</ns:no>
+          <ns:note>A4</ns:note>
+          <ns:pipestopsetname>BASSE</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>40</ns:no>
+          <ns:note>G4</ns:note>
+          <ns:pipestopsetname>BASSE</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>41</ns:no>
+          <ns:note>F4</ns:note>
+          <ns:pipestopsetname>BASSE</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>42</ns:no>
+          <ns:note>E4</ns:note>
+          <ns:pipestopsetname>BASSE</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>43</ns:no>
+          <ns:note>D4</ns:note>
+          <ns:pipestopsetname>BASSE</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackNoteDef" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>44</ns:no>
+          <ns:note>C4</ns:note>
+          <ns:pipestopsetname>BASSE</ns:pipestopsetname>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackDrum" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>45</ns:no>
+          <ns:mididef>OPEN_HI-HAT</ns:mididef>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackDrum" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>46</ns:no>
+          <ns:mididef>HIGH_AGOGO</ns:mididef>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackDrum" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>48</ns:no>
+          <ns:mididef>OPEN_HI-HAT</ns:mididef>
+        </ns:track>
+        <ns:track xsi:type="ns:TrackDrum" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <ns:no>49</ns:no>
+          <ns:mididef>LOW_AGOGO</ns:mididef>
+        </ns:track>
+      </ns:tracks>
+      <ns:pipestopsets>
+        <ns:name>BASSE</ns:name>
+      </ns:pipestopsets>
+      <ns:pipestopsets>
+        <ns:name>ACCOMPAGNEMENT</ns:name>
+      </ns:pipestopsets>
+      <ns:pipestopsets>
+        <ns:name>CHANT</ns:name>
+        <ns:pipestop>
+          <ns:name>VIOLONS</ns:name>
+          <ns:isPartOfRegister>false</ns:isPartOfRegister>
+        </ns:pipestop>
+      </ns:pipestopsets>
+      <ns:pipestopsets>
+        <ns:name>CHANT3</ns:name>
+        <ns:pipestop>
+          <ns:name>FLUTE</ns:name>
+          <ns:isPartOfRegister>false</ns:isPartOfRegister>
+        </ns:pipestop>
+      </ns:pipestopsets>
+      <ns:scaletype>default</ns:scaletype>
+      <ns:tracknb>50</ns:tracknb>
+      <ns:bookmovefromrighttoleft>true</ns:bookmovefromrighttoleft>
+    </ns:definition>
+  </ns:scale>
+  <ns:holes>
+    <ns:hole timestamp="316073" length="192622" track="0"/>
+    <ns:hole timestamp="410144" length="165745" track="2"/>
+    <ns:hole timestamp="571409" length="179183" track="3"/>
+    <ns:hole timestamp="674440" length="201581" track="4"/>
+    <ns:hole timestamp="808826" length="134388" track="6"/>
+    <ns:hole timestamp="911857" length="210540" track="8"/>
+    <ns:hole timestamp="1023847" length="188142" track="10"/>
+    <ns:hole timestamp="1149275" length="183663" track="11"/>
+    <ns:hole timestamp="1283662" length="192622" track="13"/>
+    <ns:hole timestamp="1458366" length="241897" track="16"/>
+    <ns:hole timestamp="1659947" length="295652" track="20"/>
+    <ns:hole timestamp="1843610" length="170223" track="23"/>
+    <ns:hole timestamp="2013833" length="228459" track="26"/>
+    <ns:hole timestamp="2161660" length="268774" track="29"/>
+    <ns:hole timestamp="2327404" length="286693" track="31"/>
+    <ns:hole timestamp="2488669" length="313570" track="33"/>
+    <ns:hole timestamp="2685770" length="416601" track="35"/>
+    <ns:hole timestamp="2914229" length="259815" track="37"/>
+    <ns:hole timestamp="3115810" length="259815" track="39"/>
+    <ns:hole timestamp="3214361" length="282213" track="41"/>
+    <ns:hole timestamp="3366666" length="327009" track="43"/>
+    <ns:hole timestamp="3554808" length="277734" track="46"/>
+    <ns:hole timestamp="3693675" length="443479" track="48"/>
+    <ns:hole timestamp="4164030" length="103031" track="46"/>
+    <ns:hole timestamp="4249143" length="524111" track="40"/>
+  </ns:holes>
+</ns:virtualBook>
