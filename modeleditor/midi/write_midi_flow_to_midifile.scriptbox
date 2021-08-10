@@ -30,7 +30,7 @@ class T extends ModelGroovyScript {
        
       
        console.println("output file ${f}")
-       // on retourne le paramètre "book" contenant un objet Virtualbook
+
        return [:]
    }
 
