@@ -1,0 +1,17 @@
+import org.barrelorgandiscovery.virtualbook.*
+
+def scale = virtualbook.scale
+def holes = pianoroll.selectionCopy
+holes.each {
+	def n = it
+	long l = 0
+	while (l < n.length)
+	{
+		virtualbook.addHole(new Hole(n.track, l + n.timestamp, scale.mmToTime(5)))
+		l = l + scale.mmToTime(7)
+	}
+	virtualbook.removeHole(n)
+}
+
+pianoroll.clearSelection()
+

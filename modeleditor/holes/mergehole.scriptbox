@@ -1,0 +1,46 @@
+import org.barrelorgandiscovery.model.steps.scripts.*;
+import org.barrelorgandiscovery.model.*;
+import org.barrelorgandiscovery.model.type.*;
+
+import org.barrelorgandiscovery.model.enhanced.*;
+
+import org.barrelorgandiscovery.virtualbook.*
+import org.barrelorgandiscovery.scale.*
+import org.barrelorgandiscovery.timed.*
+
+import org.barrelorgandiscovery.xml.*
+
+import java.io.File;
+
+class T extends ModelGroovyScript {
+
+   def console
+
+   // cette fonction est appeleé par le model editor
+   // pour connaitre les paramètres et leur type
+   ModelParameter[] configureParameters() {
+       [
+       
+         newParameter(true,"trous",new GenericSimpleType(Collection.class, [ ITimedLength.class ] as  Class[])),
+         newParameter(true,"trous2",new GenericSimpleType(Collection.class, [ ITimedLength.class ] as  Class[])),
+        
+         newParameter(false,"trousmerge",new GenericSimpleType(Collection.class, [ ITimedLength.class ] as  Class[] ))]
+   }
+
+   Map execute(Map m) {
+       // m contient les valeures des paramètres passés au processeur
+     
+       def trousdecales = [] as List
+       if (m["trous"]) { 
+           trousdecales.addAll(m["trous"])
+       }
+       if (m["trous2"]) {
+           trousdecales.addAll(m["trous2"])
+       }
+       
+       // on retourne le paramètre "book" contenant un objet Virtualbook
+       return [trousmerge: trousdecales]
+   }
+
+}
+new T(console:out) // le script retourne une instanciation de la classe

@@ -1,0 +1,49 @@
+import org.barrelorgandiscovery.model.steps.scripts.*;
+import org.barrelorgandiscovery.model.*;
+import org.barrelorgandiscovery.model.type.*;
+
+import org.barrelorgandiscovery.model.enhanced.*;
+
+import org.barrelorgandiscovery.virtualbook.*
+import org.barrelorgandiscovery.scale.*
+
+import org.barrelorgandiscovery.xml.*
+
+import java.io.File;
+
+class T extends ModelGroovyScript {
+
+   def console
+
+   // cette fonction est appeleé par le model editor
+   // pour connaitre les paramètres et leur type
+   ModelParameter[] configureParameters() {
+       [
+         newParameter(true,"decalage", newJavaType(Integer.class)  ), 
+         newParameter(true, "scale", newJavaType(Scale.class)),
+ 
+         newParameter(true,"trous",new GenericSimpleType(Collection.class, [ HoleWithScale.class ] as  Class[])),
+        
+         newParameter(false,"trousdecales",new GenericSimpleType(Collection.class, [ HoleWithScale.class ] as  Class[] ))]
+   }
+
+   Map execute(Map m) {
+       // m contient les valeures des paramètres passés au processeur
+       console.println("Lancement de la boite de decalage :")
+       console.println(m)
+       def s = m["scale"] as Scale
+       def decalage = m["decalage"] as Integer
+       
+       def trousdecales = m["trous"].collect {
+           it ->
+              new HoleWithScale(it.newHoleWithOffset( s.mmToTime(decalage)), s)
+       
+       }
+       console.println(trousdecales)
+       
+       // on retourne le paramètre "book" contenant un objet Virtualbook
+       return [trousdecales: trousdecales]
+   }
+
+}
+new T(console:out) // le script retourne une instanciation de la classe

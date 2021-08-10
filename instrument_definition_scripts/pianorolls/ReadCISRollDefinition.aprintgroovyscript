@@ -1,0 +1,66 @@
+import javax.xml.*
+import javax.xml.xpath.*
+import javax.xml.parsers.*
+import javax.xml.transform.dom.*
+import org.w3c.dom.*
+
+// read the RollTypeDefinitions.xml file and create associated scales in APrint
+
+def originalFile = new File("/home/use/APrintScriptRepository/instrument_definition_scripts/pianorolls/RollTypeDefinitions.xml")
+def docb = DocumentBuilderFactory.newInstance().newDocumentBuilder()
+def doc = docb.parse(originalFile)
+
+XPath xpath = XPathFactory.newInstance().newXPath()
+
+NodeList nodes = (NodeList) xpath.evaluate("//RollType",doc, XPathConstants.NODESET);
+
+
+def analyze(node) {
+
+    convertDimension = (node.units == "inches" ? 25.4 : 1.0)
+        
+    def doubleDimensionValue =  { n ->
+        return Double.parseDouble(""+n) * convertDimension
+    }
+    
+    def intValue={ n -> Integer.parseInt("" + n) }
+    
+
+    println(node.@Name)
+    double width = doubleDimensionValue(node.width)
+    
+    println("mm width :" + width)
+    low = intValue(node.LowestTrackHoleNumber)
+    high =  intValue(node.HighestTrackHoleNumber)
+    println("lowerTrack :" + low)
+    println("highTrack :" + high)
+    println("tracks number : ${high - low}")
+    space =  25.4 / 9    // standard
+    println("spacing : ${space}" )
+    
+    holeWidth = doubleDimensionValue(node.DefaultTrackHolePunchDiameter)
+    println("hole diameter ${holeWidth} -> width ${space * (high - low)}")
+    
+    // tracks specific informations
+    node.track.each {
+        if ("" + it.center != "") {
+            center = doubleDimensionValue(it.center)
+            println("Track " + it.@number + " " + center)
+        }
+    }
+    
+    
+
+}
+
+def rootNode = new XmlSlurper().parseText("" + nodes.item(3))
+analyze(rootNode)
+void 
+/*
+nodes.each {
+    // println(it.attributes.getNamedItem("Name").value)
+    def rootNode = new XmlSlurper().parseText("" + it)
+    analyze(rootNode)
+}
+*/
+
