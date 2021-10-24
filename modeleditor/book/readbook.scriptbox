@@ -1,0 +1,23 @@
+import org.barrelorgandiscovery.model.steps.scripts.*;
+import org.barrelorgandiscovery.model.*;
+import org.barrelorgandiscovery.virtualbook.*
+import org.barrelorgandiscovery.xml.*
+
+import java.io.File;
+
+class T extends ModelGroovyScript {
+   
+   def console
+   
+   ModelParameter[] configureParameters() {
+       [ newParameter(true,"fichier book",newJavaType(File.class)), 
+         newParameter(false,"book",newJavaType(VirtualBook.class))]
+   }
+
+   Map execute(Map m) {
+       console.println(m)
+       return [book:VirtualBookXmlIO.read(m["fichier book"]).virtualBook]
+   }
+
+}
+new T(console:out)
