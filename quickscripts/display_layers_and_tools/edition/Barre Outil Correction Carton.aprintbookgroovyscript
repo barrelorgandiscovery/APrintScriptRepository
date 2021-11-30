@@ -195,10 +195,12 @@ def btnh = tb.addTool(holl, "Outil Hollandisation")
 toolbarspanel.add(tb);
 
 toolbarspanel.invalidate()
-toolbarspanel.repaint()
+toolbarspanel.parent.invalidate()
+toolbarspanel.parent.revalidate()
 
 
 void
+
 
 
 
