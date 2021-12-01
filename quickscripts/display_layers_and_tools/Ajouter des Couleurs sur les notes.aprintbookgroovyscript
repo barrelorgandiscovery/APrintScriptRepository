@@ -29,7 +29,6 @@ import org.barrelorgandiscovery.tools.*
     def colors = [ "C" : Color.blue, 
                     "C#" : Color.pink,
                     "D" : Color.red,
-                    "D#" : Color.white,
                     "E" : Color.yellow,
                     "F" : Color.black,
                     "F#" : Color.orange,
@@ -70,10 +69,12 @@ import org.barrelorgandiscovery.tools.*
             if (lyrs.containsKey(nn))
             {
                 def gl = lyrs[nn]
-                def y = scale.firstTrackAxis + h.track * scale.getIntertrackHeight() + 2
-                def he = scale.getIntertrackHeight() / 2
-                
-                gl.add(new Rectangle2D.Double(virtualbook.scale.timeToMM(h.timestamp) + 2,
+                def y = scale.firstTrackAxis + h.track * scale.getIntertrackHeight() 
+                if (scale.preferredViewedInversed) {
+                    y = scale.width - y
+                }
+                def he = scale.getIntertrackHeight() / 2.0
+                gl.add(new Rectangle2D.Double(virtualbook.scale.timeToMM(h.timestamp) ,
                             y - he,   scale.timeToMM(h.length),2*he))
             } else 
             {

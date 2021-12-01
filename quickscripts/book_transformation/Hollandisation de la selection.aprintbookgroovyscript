@@ -1,3 +1,6 @@
+// this script create small holes inside the big hole
+// user must select the holes to transform, using the selection tools before launching the script
+
 import org.barrelorgandiscovery.virtualbook.*
 
 def scale = virtualbook.scale

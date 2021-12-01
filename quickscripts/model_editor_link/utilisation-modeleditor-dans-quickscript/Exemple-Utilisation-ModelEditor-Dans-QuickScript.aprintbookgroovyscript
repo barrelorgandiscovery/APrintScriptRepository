@@ -1,0 +1,36 @@
+
+// execution model editor
+import org.barrelorgandiscovery.model.*
+import org.barrelorgandiscovery.gui.etl.*
+import java.util.*
+
+def registry = new DefaultModelStepRegistry();
+def repository = services.getRepository()
+def asyncj = services.getAsyncJobs()
+
+
+def me = new ModelEditor(registry, repository, asyncj, [:])
+
+me.load(new FileInputStream(new File("/home/use/tmp/entree_sortie.model")));
+me.console = console
+me.validateState()
+
+println(me.execute(["entree":"monentree"]))
+
+// récupération de la valeur de sortie du model editor
+valueSortie = me.getExecutedTerminalValueByName("sortie")
+print(valueSortie)
+
+
+// affichage du model editor
+import javax.swing.*
+import java.awt.*
+
+def f = new JFrame()
+f.layout = new BorderLayout()
+f.contentPane.add(me, BorderLayout.CENTER)
+f.size = [500,400]
+f.visible = true
+
+
+

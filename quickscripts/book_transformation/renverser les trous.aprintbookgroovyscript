@@ -1,3 +1,6 @@
+// this script reverse the wholes vertically, 
+// THE BOOK MUST HAVE THE SAME REFERENCE AXIS (UP and DOWN)
+
 import org.barrelorgandiscovery.virtualbook.VirtualBook
 
 

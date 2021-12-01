@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?><org.barrelorgandiscovery.gui.etl.EtlMxGraph allowDanglingEdges="0" multigraph="0">
+  <mxGraphModel as="model">
+    <root>
+      <mxCell id="0"/>
+      <mxCell id="1" parent="0"/>
+      <org.barrelorgandiscovery.model.TerminalParameterModelStep id="6" in="false" label="sortie" name="sortie">
+        <type>org.barrelorgandiscovery.model.type.JavaType|java.lang.String</type>
+        <value>rO0ABXQAAA==</value>
+        <mxCell connectable="0" parent="1" style="group" vertex="1">
+          <mxGeometry as="geometry" height="40.0" width="150.0" x="560.0" y="130.0"/>
+        </mxCell>
+      </org.barrelorgandiscovery.model.TerminalParameterModelStep>
+      <org.barrelorgandiscovery.model.ModelParameter id="7" in="true" label="sortie" name="sortie" optional="true">
+        <type>org.barrelorgandiscovery.model.type.JavaType|java.lang.String</type>
+        <mxCell parent="6" style="inparam" vertex="1">
+          <mxGeometry as="geometry" height="10.0" width="10.0" x="10.0" y="20.0"/>
+        </mxCell>
+      </org.barrelorgandiscovery.model.ModelParameter>
+      <org.barrelorgandiscovery.model.TerminalParameterModelStep id="8" in="true" label="entree" name="entree">
+        <type>org.barrelorgandiscovery.model.type.JavaType|java.lang.String</type>
+        <value>rO0ABXQAAA==</value>
+        <mxCell connectable="0" parent="1" style="group" vertex="1">
+          <mxGeometry as="geometry" height="40.0" width="150.0" x="150.0" y="130.0"/>
+        </mxCell>
+      </org.barrelorgandiscovery.model.TerminalParameterModelStep>
+      <org.barrelorgandiscovery.model.ModelParameter id="9" in="false" label="entree" name="entree" optional="true">
+        <type>org.barrelorgandiscovery.model.type.JavaType|java.lang.String</type>
+        <mxCell parent="8" style="outparam" vertex="1">
+          <mxGeometry as="geometry" height="10.0" width="10.0" x="130.0" y="20.0"/>
+        </mxCell>
+      </org.barrelorgandiscovery.model.ModelParameter>
+      <mxCell edge="1" id="10" parent="1" source="9" style="" target="7" value="">
+        <mxGeometry as="geometry" relative="1">
+          <mxPoint as="sourcePoint" x="290.0" y="160.0"/>
+          <mxPoint as="targetPoint" x="570.0" y="160.0"/>
+        </mxGeometry>
+      </mxCell>
+    </root>
+  </mxGraphModel>
+  <mxStylesheet as="stylesheet">
+    <add as="vertical">
+      <add as="labelBackgroundColor" value="white"/>
+      <add as="endArrow" value="classic"/>
+      <add as="align" value="center"/>
+      <add as="strokeColor" value="black"/>
+      <add as="rounded" value="1"/>
+      <add as="shape" value="connector"/>
+      <add as="fontSize" value="10"/>
+      <add as="elbow" value="vertical"/>
+      <add as="verticalAlign" value="middle"/>
+      <add as="labelBorderColor" value="black"/>
+      <add as="edgeStyle" value="com.mxgraph.view.mxEdgeStyle$3@4d0da9a7"/>
+    </add>
+    <add as="arrow">
+      <add as="align" value="center"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$1@61871ef5"/>
+      <add as="fontSize" value="11"/>
+      <add as="fillColor" value="white"/>
+      <add as="shape" value="arrow"/>
+      <add as="strokeColor" value="black"/>
+      <add as="verticalAlign" value="top"/>
+    </add>
+    <add as="terminalgroup">
+      <add as="fillColor" value="#FFFF00"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$1@61871ef5"/>
+      <add as="opacity" value="50"/>
+      <add as="align" value="center"/>
+      <add as="verticalAlign" value="top"/>
+      <add as="dashed" value="1"/>
+      <add as="fontSize" value="11"/>
+      <add as="strokeColor" value="black"/>
+      <add as="shape" value="label"/>
+    </add>
+    <add as="rhombus">
+      <add as="align" value="center"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$3@13807c9a"/>
+      <add as="fontSize" value="11"/>
+      <add as="fillColor" value="white"/>
+      <add as="shape" value="rhombus"/>
+      <add as="strokeColor" value="black"/>
+      <add as="verticalAlign" value="top"/>
+    </add>
+    <add as="parameterunconnected">
+      <add as="verticalAlign" value="top"/>
+      <add as="labelPosition" value="right"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$2@3360bfdc"/>
+      <add as="strokeColor" value="black"/>
+      <add as="align" value="left"/>
+      <add as="shape" value="ellipse"/>
+      <add as="fillColor" value="#00FFFF"/>
+      <add as="fontSize" value="11"/>
+    </add>
+    <add as="disconnected">
+      <add as="fillColor" value="#FF0000"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$1@61871ef5"/>
+      <add as="opacity" value="50"/>
+      <add as="align" value="center"/>
+      <add as="verticalAlign" value="top"/>
+      <add as="dashed" value="1"/>
+      <add as="fontSize" value="11"/>
+      <add as="strokeColor" value="black"/>
+      <add as="shape" value="label"/>
+    </add>
+    <add as="straight">
+      <add as="align" value="center"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$1@61871ef5"/>
+      <add as="fontSize" value="11"/>
+      <add as="fillColor" value="white"/>
+      <add as="shape" value="connector"/>
+      <add as="strokeColor" value="black"/>
+      <add as="endArrow" value="classic"/>
+      <add as="verticalAlign" value="top"/>
+    </add>
+    <add as="configured">
+      <add as="align" value="center"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$1@61871ef5"/>
+      <add as="fontSize" value="11"/>
+      <add as="fillColor" value="white"/>
+      <add as="shape" value="label"/>
+      <add as="strokeColor" value="black"/>
+      <add as="verticalAlign" value="top"/>
+    </add>
+    <add as="defaultEdge">
+      <add as="labelBorderColor" value="black"/>
+      <add as="align" value="center"/>
+      <add as="fontSize" value="10"/>
+      <add as="shape" value="connector"/>
+      <add as="strokeColor" value="black"/>
+      <add as="endArrow" value="classic"/>
+      <add as="verticalAlign" value="middle"/>
+      <add as="edgeStyle" value="com.mxgraph.view.mxEdgeStyle$3@4d0da9a7"/>
+      <add as="rounded" value="1"/>
+      <add as="labelBackgroundColor" value="white"/>
+    </add>
+    <add as="group">
+      <add as="align" value="center"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$1@61871ef5"/>
+      <add as="fontSize" value="11"/>
+      <add as="fillColor" value="white"/>
+      <add as="shape" value="label"/>
+      <add as="opacity" value="50"/>
+      <add as="strokeColor" value="black"/>
+      <add as="dashed" value="1"/>
+      <add as="verticalAlign" value="top"/>
+    </add>
+    <add as="defaultVertex">
+      <add as="align" value="center"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$1@61871ef5"/>
+      <add as="fontSize" value="11"/>
+      <add as="fillColor" value="white"/>
+      <add as="shape" value="label"/>
+      <add as="strokeColor" value="black"/>
+      <add as="verticalAlign" value="top"/>
+    </add>
+    <add as="unscheduled">
+      <add as="align" value="center"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$1@61871ef5"/>
+      <add as="fontSize" value="11"/>
+      <add as="fillColor" value="#FF5555"/>
+      <add as="shape" value="label"/>
+      <add as="strokeColor" value="black"/>
+      <add as="verticalAlign" value="top"/>
+    </add>
+    <add as="outparam">
+      <add as="align" value="right"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$2@3360bfdc"/>
+      <add as="fontSize" value="11"/>
+      <add as="fillColor" value="#FF0000"/>
+      <add as="shape" value="ellipse"/>
+      <add as="strokeColor" value="black"/>
+      <add as="verticalAlign" value="top"/>
+      <add as="labelPosition" value="left"/>
+    </add>
+    <add as="swimlane">
+      <add as="align" value="center"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$1@61871ef5"/>
+      <add as="fontStyle" value="1"/>
+      <add as="fontSize" value="12"/>
+      <add as="fillColor" value="white"/>
+      <add as="startSize" value="23"/>
+      <add as="shape" value="swimlane"/>
+      <add as="strokeColor" value="black"/>
+      <add as="verticalAlign" value="top"/>
+    </add>
+    <add as="roundImage">
+      <add as="fillColor" value="white"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$2@3360bfdc"/>
+      <add as="labelBackgroundColor" value="white"/>
+      <add as="align" value="center"/>
+      <add as="verticalAlign" value="top"/>
+      <add as="verticalLabelPosition" value="bottom"/>
+      <add as="fontSize" value="11"/>
+      <add as="strokeColor" value="black"/>
+      <add as="shape" value="image"/>
+    </add>
+    <add as="line">
+      <add as="align" value="center"/>
+      <add as="spacingTop" value="8"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$1@61871ef5"/>
+      <add as="strokeWidth" value="4"/>
+      <add as="fontSize" value="11"/>
+      <add as="fillColor" value="white"/>
+      <add as="shape" value="line"/>
+      <add as="strokeColor" value="black"/>
+      <add as="verticalAlign" value="top"/>
+      <add as="labelBackgroundColor" value="white"/>
+    </add>
+    <add as="entity">
+      <add as="labelBackgroundColor" value="white"/>
+      <add as="endArrow" value="classic"/>
+      <add as="align" value="center"/>
+      <add as="strokeColor" value="black"/>
+      <add as="rounded" value="1"/>
+      <add as="shape" value="connector"/>
+      <add as="fontSize" value="10"/>
+      <add as="verticalAlign" value="middle"/>
+      <add as="labelBorderColor" value="black"/>
+      <add as="edgeStyle" value="com.mxgraph.view.mxEdgeStyle$1@e2e3fde"/>
+    </add>
+    <add as="unconfigured">
+      <add as="align" value="center"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$1@61871ef5"/>
+      <add as="fontSize" value="11"/>
+      <add as="fillColor" value="#00FFFF"/>
+      <add as="shape" value="label"/>
+      <add as="strokeColor" value="black"/>
+      <add as="verticalAlign" value="top"/>
+    </add>
+    <add as="inparam">
+      <add as="align" value="left"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$2@3360bfdc"/>
+      <add as="fontSize" value="11"/>
+      <add as="fillColor" value="#00FF00"/>
+      <add as="shape" value="ellipse"/>
+      <add as="strokeColor" value="black"/>
+      <add as="verticalAlign" value="top"/>
+      <add as="labelPosition" value="right"/>
+    </add>
+    <add as="image">
+      <add as="align" value="center"/>
+      <add as="verticalLabelPosition" value="bottom"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$1@61871ef5"/>
+      <add as="fontSize" value="11"/>
+      <add as="fillColor" value="white"/>
+      <add as="shape" value="image"/>
+      <add as="strokeColor" value="black"/>
+      <add as="verticalAlign" value="top"/>
+      <add as="labelBackgroundColor" value="white"/>
+    </add>
+    <add as="rhombusImage">
+      <add as="fillColor" value="white"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$3@13807c9a"/>
+      <add as="labelBackgroundColor" value="white"/>
+      <add as="align" value="center"/>
+      <add as="verticalAlign" value="top"/>
+      <add as="verticalLabelPosition" value="bottom"/>
+      <add as="fontSize" value="11"/>
+      <add as="strokeColor" value="black"/>
+      <add as="shape" value="image"/>
+    </add>
+    <add as="triangle">
+      <add as="align" value="center"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$4@5787e858"/>
+      <add as="fontSize" value="11"/>
+      <add as="fillColor" value="white"/>
+      <add as="shape" value="triangle"/>
+      <add as="strokeColor" value="black"/>
+      <add as="verticalAlign" value="top"/>
+    </add>
+    <add as="ellipse">
+      <add as="align" value="center"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$2@3360bfdc"/>
+      <add as="fontSize" value="11"/>
+      <add as="fillColor" value="white"/>
+      <add as="shape" value="ellipse"/>
+      <add as="strokeColor" value="black"/>
+      <add as="verticalAlign" value="top"/>
+    </add>
+    <add as="parameterconnected">
+      <add as="verticalAlign" value="top"/>
+      <add as="labelPosition" value="right"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$2@3360bfdc"/>
+      <add as="strokeColor" value="black"/>
+      <add as="align" value="left"/>
+      <add as="shape" value="ellipse"/>
+      <add as="fillColor" value="#00FF00"/>
+      <add as="fontSize" value="11"/>
+    </add>
+  </mxStylesheet>
+  <mxCell as="defaultParent" id="1" parent="0"/>
+  <Array as="multiplicities"/>
+</org.barrelorgandiscovery.gui.etl.EtlMxGraph>

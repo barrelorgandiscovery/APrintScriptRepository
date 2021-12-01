@@ -1,0 +1,17 @@
+
+// this script count the number of holes PER tracks
+
+
+m = [:]
+
+virtualbook.holesCopy.each { 
+   c = m[it.track]
+   if (!c) {
+     c = 1
+   } else {
+     c = c + 1
+   }
+   m[it.track] = c
+}
+
+m

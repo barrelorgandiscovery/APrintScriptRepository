@@ -1,4 +1,8 @@
 
+// This script is used for paper rolls, 
+//   it extends the holes taking into account the thickness of the paper (e), and the initial paper roll size (r0)
+
+
 import groovy.aprint.transform.*
 import org.barrelorgandiscovery.virtualbook.*
 
