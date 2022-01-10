@@ -1,0 +1,520 @@
+<?xml version="1.0" encoding="UTF-8"?><org.barrelorgandiscovery.gui.etl.EtlMxGraph allowDanglingEdges="0" multigraph="0">
+  <mxGraphModel as="model">
+    <root>
+      <mxCell id="0"/>
+      <mxCell id="1" parent="0"/>
+      <org.barrelorgandiscovery.model.TerminalParameterModelStep id="55" in="true" label="inputFolder" name="inputFolder">
+                
+        <type>org.barrelorgandiscovery.model.type.JavaType|java.lang.String</type>
+                
+        <value>rO0ABXQAEC9ob21lL3VzZS9hcHJpbnQ=</value>
+        <mxCell connectable="0" parent="1" style="configured" vertex="1">
+          <mxGeometry as="geometry" height="40.0" width="150.0" x="100.0" y="40.0"/>
+        </mxCell>
+      </org.barrelorgandiscovery.model.TerminalParameterModelStep>
+      <org.barrelorgandiscovery.model.ModelParameter id="56" in="false" label="inputFolder" name="inputFolder" optional="true">
+                
+        <type>org.barrelorgandiscovery.model.type.JavaType|java.lang.String</type>
+        <mxCell parent="55" style="outparam" vertex="1">
+          <mxGeometry as="geometry" height="10.0" width="10.0" x="130.0" y="20.0"/>
+        </mxCell>
+      </org.barrelorgandiscovery.model.ModelParameter>
+      <org.barrelorgandiscovery.model.steps.scripts.GroovyScriptModelStep id="131" label="Print Object to Console">
+                
+        <script>import org.barrelorgandiscovery.model.steps.scripts.*;
+import org.barrelorgandiscovery.model.*;
+import org.barrelorgandiscovery.virtualbook.*
+import org.barrelorgandiscovery.xml.*
+import org.barrelorgandiscovery.model.type.*;
+
+import java.io.File;
+
+class T extends ModelGroovyScript {
+
+   def console
+   
+   String getLabel() {
+       return "Print Object to Console"
+   }
+
+   // cette fonction est appeleé par le model editor
+   // pour connaitre les paramètres et leur type
+   ModelParameter[] configureParameters() {
+       [ newParameter(true,"objectToPrint",new GenericSimpleType(Collection.class, [ Object.class ] as Class[]))]
+   }
+
+   Map execute(Map m) {
+       // m contient les valeures des paramètres passés au processeur
+       console.println(m)
+       // on retourne le paramètre "book" contenant un objet Virtualbook
+       return [:]
+   }
+
+}
+new T(console:out) // le script retourne une instanciation de la classe</script>
+        <mxCell connectable="0" parent="1" style="configured" vertex="1">
+          <mxGeometry as="geometry" height="40.0" width="150.0" x="670.0" y="70.0"/>
+        </mxCell>
+      </org.barrelorgandiscovery.model.steps.scripts.GroovyScriptModelStep>
+      <org.barrelorgandiscovery.model.ModelParameter id="132" in="true" label="objectToPrint" name="objectToPrint" optional="false">
+                
+        <type>org.barrelorgandiscovery.model.type.GenericSimpleType|java.util.Collection&lt;java.lang.Object&gt;</type>
+        <mxCell parent="131" style="inparam" vertex="1">
+          <mxGeometry as="geometry" height="10.0" width="10.0" x="10.0" y="20.0"/>
+        </mxCell>
+      </org.barrelorgandiscovery.model.ModelParameter>
+      <org.barrelorgandiscovery.model.steps.scripts.GroovyScriptModelStep id="185" label="Call ModelEditor">
+                
+        <script>import org.barrelorgandiscovery.model.steps.scripts.*;
+import org.barrelorgandiscovery.model.*;
+import org.barrelorgandiscovery.virtualbook.*
+import org.barrelorgandiscovery.xml.*
+import org.barrelorgandiscovery.model.type.*;
+
+import java.io.File;
+
+// execution model editor
+import org.barrelorgandiscovery.model.*
+import org.barrelorgandiscovery.gui.etl.*
+import java.util.*
+
+
+
+
+
+class T extends ModelGroovyScript implements IModelStepContextAware{
+
+   def console
+
+    String getLabel() {
+        return "Call ModelEditor"
+    }
+
+   // cette fonction est appeleé par le model editor
+   // pour connaitre les paramètres et leur type
+   ModelParameter[] configureParameters() {
+       [ 
+           newParameter(true,"midiFilesToTransform",new GenericSimpleType(Collection.class, [ File.class ] as Class[])),
+           newParameter(true,"modelEditorToLaunch", newJavaType(File.class))
+       
+       ]
+   }
+   
+   def context
+   
+   void defineContext(Map _context) {
+       context = _context;
+   }
+
+   Map execute(Map m) {
+        // m contient les valeures des paramètres passés au processeur
+        console.println(m)       
+        console.println(context)
+        
+        def registry = new DefaultModelStepRegistry();
+        def repository = context.services.getRepository()
+        def asyncj = context.services.getAsyncJobs()
+        
+        def me = new ModelEditor(registry, repository, asyncj, [:])
+        
+        def modelEditorFile = m["modelEditorToLaunch"]
+        
+        // "/home/use/APrint_Tutoriels/14 - Transformations_Fichiers_Midi_Model_Editor/midi_filtering_and_write.model"
+        me.load(new FileInputStream(modelEditorFile));
+        me.console = context.console // this is a script console, not printstream
+        def errors = me.validateState()
+        if (errors.size() &gt; 0) {
+            console.println("THERE ARE ERRORS in validation")
+            console.println(errors)
+            throw new Exception("Errors, read messages")
+        }
+        
+        def midiFilesToTransform = m["midiFilesToTransform"]
+        midiFilesToTransform.each { f -&gt;
+                try {
+                       console.println("********* Execution sur le fichier :" + f)
+                       def result = me.executeSynchronous(["inputFile":f])
+                       console.println("")
+                       console.println("resultat : ");
+                       console.println(result)
+                       console.println("==== Fin Execution")
+               } catch(Throwable t) {
+                   console.println(t)
+               }
+        }
+        
+        // récupération de la valeur de sortie du model editor
+        // valueSortie = me.getExecutedTerminalValueByName("sortie")
+        // console.println(valueSortie)
+
+       return [:]
+   }
+
+}
+new T(console:out) // le script retourne une instanciation de la classe</script>
+        <mxCell connectable="0" parent="1" style="configured" vertex="1">
+          <mxGeometry as="geometry" height="60.0" width="150.0" x="650.0" y="210.0"/>
+        </mxCell>
+      </org.barrelorgandiscovery.model.steps.scripts.GroovyScriptModelStep>
+      <org.barrelorgandiscovery.model.ModelParameter id="186" in="true" label="midiFilesToTransform" name="midiFilesToTransform" optional="false">
+                
+        <type>org.barrelorgandiscovery.model.type.GenericSimpleType|java.util.Collection&lt;java.io.File&gt;</type>
+        <mxCell parent="185" style="inparam" vertex="1">
+          <mxGeometry as="geometry" height="10.0" width="10.0" x="10.0" y="20.0"/>
+        </mxCell>
+      </org.barrelorgandiscovery.model.ModelParameter>
+      <org.barrelorgandiscovery.model.ModelParameter id="187" in="true" label="modelEditorToLaunch" name="modelEditorToLaunch" optional="false">
+                
+        <type>org.barrelorgandiscovery.model.type.JavaType|java.io.File</type>
+        <mxCell parent="185" style="inparam" vertex="1">
+          <mxGeometry as="geometry" height="10.0" width="10.0" x="10.0" y="40.0"/>
+        </mxCell>
+      </org.barrelorgandiscovery.model.ModelParameter>
+      <org.barrelorgandiscovery.model.steps.scripts.GroovyScriptModelStep id="190" label="List MidiFiles">
+        <script>import org.barrelorgandiscovery.model.steps.scripts.*;
+import org.barrelorgandiscovery.model.*;
+import org.barrelorgandiscovery.model.type.*;
+import org.barrelorgandiscovery.virtualbook.*
+import org.barrelorgandiscovery.xml.*
+
+import java.io.File;
+
+class T extends ModelGroovyScript {
+
+   def console
+
+   String getLabel() {
+       return "List MidiFiles"
+   }
+
+
+   // cette fonction est appeleé par le model editor
+   // pour connaitre les paramètres et leur type
+   ModelParameter[] configureParameters() {
+       [ newParameter(true,"inputFolder",newJavaType(String.class)), 
+         newParameter(false,"listMidiFile",new GenericSimpleType(Collection.class, [ File.class ] as Class[]))]
+   }
+
+   Map execute(Map m) {
+       console.println(m)
+       // m contient les valeures des paramètres passés au processeur
+       def inputFolder = new File(m["inputFolder"])
+       console.println("reading files from " + inputFolder)
+
+       assert inputFolder.isDirectory()
+
+       def r = inputFolder.listFiles( { e-&gt; e.name.endsWith('.mid') } as FileFilter)
+        console.println(r)
+       // on retourne le paramètre "book" contenant un objet Virtualbook
+       return ["listMidiFile":r]
+   }
+
+}
+
+new T(console:out) // le script retourne une instanciation de la classe
+
+</script>
+        <mxCell connectable="0" parent="1" style="configured" vertex="1">
+          <mxGeometry as="geometry" height="40.0" width="150.0" x="370.0" y="120.0"/>
+        </mxCell>
+      </org.barrelorgandiscovery.model.steps.scripts.GroovyScriptModelStep>
+      <org.barrelorgandiscovery.model.ModelParameter id="191" in="true" label="inputFolder" name="inputFolder" optional="false">
+        <type>org.barrelorgandiscovery.model.type.JavaType|java.lang.String</type>
+        <mxCell parent="190" style="inparam" vertex="1">
+          <mxGeometry as="geometry" height="10.0" width="10.0" x="10.0" y="20.0"/>
+        </mxCell>
+      </org.barrelorgandiscovery.model.ModelParameter>
+      <org.barrelorgandiscovery.model.ModelParameter id="192" in="false" label="listMidiFile" name="listMidiFile" optional="false">
+        <type>org.barrelorgandiscovery.model.type.GenericSimpleType|java.util.Collection&lt;java.io.File&gt;</type>
+        <mxCell parent="190" style="outparam" vertex="1">
+          <mxGeometry as="geometry" height="10.0" width="10.0" x="130.0" y="20.0"/>
+        </mxCell>
+      </org.barrelorgandiscovery.model.ModelParameter>
+      <mxCell edge="1" id="193" parent="1" source="56" target="191">
+        <mxGeometry as="geometry" relative="1"/>
+      </mxCell>
+      <mxCell edge="1" id="194" parent="1" source="192" target="132">
+        <mxGeometry as="geometry" relative="1"/>
+      </mxCell>
+      <mxCell edge="1" id="195" parent="1" source="192" target="186">
+        <mxGeometry as="geometry" relative="1"/>
+      </mxCell>
+      <org.barrelorgandiscovery.model.TerminalParameterModelStep id="199" in="true" label="ModelEditor To Launch Path " name="ModelEditor To Launch Path ">
+        <type>org.barrelorgandiscovery.model.type.JavaType|java.io.File</type>
+        <value>rO0ABXNyAAxqYXZhLmlvLkZpbGUELaRFDg3k/wMAAUwABHBhdGh0ABJMamF2YS9sYW5nL1N0cmlu&#13;
+Zzt4cHQAYC9ob21lL3VzZS9BUHJpbnRTY3JpcHRSZXBvc2l0b3J5L2JhdGNoL2JhdGNoX21pZGlm&#13;
+aWxlc19wcm9jZXNzaW5nL21pZGlfZmlsdGVyaW5nX2FuZF93cml0ZS5tb2RlbHcCAC94</value>
+        <mxCell connectable="0" parent="1" style="group" vertex="1">
+          <mxGeometry as="geometry" height="40.0" width="189.0" x="350.0" y="260.0"/>
+        </mxCell>
+      </org.barrelorgandiscovery.model.TerminalParameterModelStep>
+      <org.barrelorgandiscovery.model.ModelParameter id="200" in="false" label="ModelEditor To Launch Path " name="ModelEditor To Launch Path " optional="true">
+        <type>org.barrelorgandiscovery.model.type.JavaType|java.io.File</type>
+        <mxCell parent="199" style="outparam" vertex="1">
+          <mxGeometry as="geometry" height="10.0" width="10.0" x="169.0" y="20.0"/>
+        </mxCell>
+      </org.barrelorgandiscovery.model.ModelParameter>
+      <mxCell edge="1" id="201" parent="1" source="200" target="187">
+        <mxGeometry as="geometry" relative="1"/>
+      </mxCell>
+    </root>
+  </mxGraphModel>
+  <mxStylesheet as="stylesheet">
+    <add as="vertical">
+      <add as="labelBackgroundColor" value="white"/>
+      <add as="endArrow" value="classic"/>
+      <add as="align" value="center"/>
+      <add as="strokeColor" value="black"/>
+      <add as="rounded" value="1"/>
+      <add as="shape" value="connector"/>
+      <add as="fontSize" value="10"/>
+      <add as="elbow" value="vertical"/>
+      <add as="verticalAlign" value="middle"/>
+      <add as="labelBorderColor" value="black"/>
+      <add as="edgeStyle" value="com.mxgraph.view.mxEdgeStyle$3@41f63dec"/>
+    </add>
+    <add as="arrow">
+      <add as="align" value="center"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$1@7cb321ee"/>
+      <add as="fontSize" value="11"/>
+      <add as="fillColor" value="white"/>
+      <add as="shape" value="arrow"/>
+      <add as="strokeColor" value="black"/>
+      <add as="verticalAlign" value="top"/>
+    </add>
+    <add as="terminalgroup">
+      <add as="fillColor" value="#FFFF00"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$1@7cb321ee"/>
+      <add as="opacity" value="50"/>
+      <add as="align" value="center"/>
+      <add as="verticalAlign" value="top"/>
+      <add as="dashed" value="1"/>
+      <add as="fontSize" value="11"/>
+      <add as="strokeColor" value="black"/>
+      <add as="shape" value="label"/>
+    </add>
+    <add as="rhombus">
+      <add as="align" value="center"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$3@577c4dd2"/>
+      <add as="fontSize" value="11"/>
+      <add as="fillColor" value="white"/>
+      <add as="shape" value="rhombus"/>
+      <add as="strokeColor" value="black"/>
+      <add as="verticalAlign" value="top"/>
+    </add>
+    <add as="parameterunconnected">
+      <add as="verticalAlign" value="top"/>
+      <add as="labelPosition" value="right"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$2@ae6381"/>
+      <add as="strokeColor" value="black"/>
+      <add as="align" value="left"/>
+      <add as="shape" value="ellipse"/>
+      <add as="fillColor" value="#00FFFF"/>
+      <add as="fontSize" value="11"/>
+    </add>
+    <add as="disconnected">
+      <add as="fillColor" value="#FF0000"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$1@7cb321ee"/>
+      <add as="opacity" value="50"/>
+      <add as="align" value="center"/>
+      <add as="verticalAlign" value="top"/>
+      <add as="dashed" value="1"/>
+      <add as="fontSize" value="11"/>
+      <add as="strokeColor" value="black"/>
+      <add as="shape" value="label"/>
+    </add>
+    <add as="straight">
+      <add as="align" value="center"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$1@7cb321ee"/>
+      <add as="fontSize" value="11"/>
+      <add as="fillColor" value="white"/>
+      <add as="shape" value="connector"/>
+      <add as="strokeColor" value="black"/>
+      <add as="endArrow" value="classic"/>
+      <add as="verticalAlign" value="top"/>
+    </add>
+    <add as="configured">
+      <add as="align" value="center"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$1@7cb321ee"/>
+      <add as="fontSize" value="11"/>
+      <add as="fillColor" value="white"/>
+      <add as="shape" value="label"/>
+      <add as="strokeColor" value="black"/>
+      <add as="verticalAlign" value="top"/>
+    </add>
+    <add as="defaultEdge">
+      <add as="labelBorderColor" value="black"/>
+      <add as="align" value="center"/>
+      <add as="fontSize" value="10"/>
+      <add as="shape" value="connector"/>
+      <add as="strokeColor" value="black"/>
+      <add as="endArrow" value="classic"/>
+      <add as="verticalAlign" value="middle"/>
+      <add as="edgeStyle" value="com.mxgraph.view.mxEdgeStyle$3@41f63dec"/>
+      <add as="rounded" value="1"/>
+      <add as="labelBackgroundColor" value="white"/>
+    </add>
+    <add as="group">
+      <add as="align" value="center"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$1@7cb321ee"/>
+      <add as="fontSize" value="11"/>
+      <add as="fillColor" value="white"/>
+      <add as="shape" value="label"/>
+      <add as="opacity" value="50"/>
+      <add as="strokeColor" value="black"/>
+      <add as="dashed" value="1"/>
+      <add as="verticalAlign" value="top"/>
+    </add>
+    <add as="defaultVertex">
+      <add as="align" value="center"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$1@7cb321ee"/>
+      <add as="fontSize" value="11"/>
+      <add as="fillColor" value="white"/>
+      <add as="shape" value="label"/>
+      <add as="strokeColor" value="black"/>
+      <add as="verticalAlign" value="top"/>
+    </add>
+    <add as="unscheduled">
+      <add as="align" value="center"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$1@7cb321ee"/>
+      <add as="fontSize" value="11"/>
+      <add as="fillColor" value="#FF5555"/>
+      <add as="shape" value="label"/>
+      <add as="strokeColor" value="black"/>
+      <add as="verticalAlign" value="top"/>
+    </add>
+    <add as="outparam">
+      <add as="align" value="right"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$2@ae6381"/>
+      <add as="fontSize" value="11"/>
+      <add as="fillColor" value="#FF0000"/>
+      <add as="shape" value="ellipse"/>
+      <add as="strokeColor" value="black"/>
+      <add as="verticalAlign" value="top"/>
+      <add as="labelPosition" value="left"/>
+    </add>
+    <add as="swimlane">
+      <add as="align" value="center"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$1@7cb321ee"/>
+      <add as="fontStyle" value="1"/>
+      <add as="fontSize" value="12"/>
+      <add as="fillColor" value="white"/>
+      <add as="startSize" value="23"/>
+      <add as="shape" value="swimlane"/>
+      <add as="strokeColor" value="black"/>
+      <add as="verticalAlign" value="top"/>
+    </add>
+    <add as="roundImage">
+      <add as="fillColor" value="white"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$2@ae6381"/>
+      <add as="labelBackgroundColor" value="white"/>
+      <add as="align" value="center"/>
+      <add as="verticalAlign" value="top"/>
+      <add as="verticalLabelPosition" value="bottom"/>
+      <add as="fontSize" value="11"/>
+      <add as="strokeColor" value="black"/>
+      <add as="shape" value="image"/>
+    </add>
+    <add as="line">
+      <add as="align" value="center"/>
+      <add as="spacingTop" value="8"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$1@7cb321ee"/>
+      <add as="strokeWidth" value="4"/>
+      <add as="fontSize" value="11"/>
+      <add as="fillColor" value="white"/>
+      <add as="shape" value="line"/>
+      <add as="strokeColor" value="black"/>
+      <add as="verticalAlign" value="top"/>
+      <add as="labelBackgroundColor" value="white"/>
+    </add>
+    <add as="entity">
+      <add as="labelBackgroundColor" value="white"/>
+      <add as="endArrow" value="classic"/>
+      <add as="align" value="center"/>
+      <add as="strokeColor" value="black"/>
+      <add as="rounded" value="1"/>
+      <add as="shape" value="connector"/>
+      <add as="fontSize" value="10"/>
+      <add as="verticalAlign" value="middle"/>
+      <add as="labelBorderColor" value="black"/>
+      <add as="edgeStyle" value="com.mxgraph.view.mxEdgeStyle$1@70472725"/>
+    </add>
+    <add as="unconfigured">
+      <add as="align" value="center"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$1@7cb321ee"/>
+      <add as="fontSize" value="11"/>
+      <add as="fillColor" value="#00FFFF"/>
+      <add as="shape" value="label"/>
+      <add as="strokeColor" value="black"/>
+      <add as="verticalAlign" value="top"/>
+    </add>
+    <add as="inparam">
+      <add as="align" value="left"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$2@ae6381"/>
+      <add as="fontSize" value="11"/>
+      <add as="fillColor" value="#00FF00"/>
+      <add as="shape" value="ellipse"/>
+      <add as="strokeColor" value="black"/>
+      <add as="verticalAlign" value="top"/>
+      <add as="labelPosition" value="right"/>
+    </add>
+    <add as="image">
+      <add as="align" value="center"/>
+      <add as="verticalLabelPosition" value="bottom"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$1@7cb321ee"/>
+      <add as="fontSize" value="11"/>
+      <add as="fillColor" value="white"/>
+      <add as="shape" value="image"/>
+      <add as="strokeColor" value="black"/>
+      <add as="verticalAlign" value="top"/>
+      <add as="labelBackgroundColor" value="white"/>
+    </add>
+    <add as="rhombusImage">
+      <add as="fillColor" value="white"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$3@577c4dd2"/>
+      <add as="labelBackgroundColor" value="white"/>
+      <add as="align" value="center"/>
+      <add as="verticalAlign" value="top"/>
+      <add as="verticalLabelPosition" value="bottom"/>
+      <add as="fontSize" value="11"/>
+      <add as="strokeColor" value="black"/>
+      <add as="shape" value="image"/>
+    </add>
+    <add as="triangle">
+      <add as="align" value="center"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$4@159ed492"/>
+      <add as="fontSize" value="11"/>
+      <add as="fillColor" value="white"/>
+      <add as="shape" value="triangle"/>
+      <add as="strokeColor" value="black"/>
+      <add as="verticalAlign" value="top"/>
+    </add>
+    <add as="ellipse">
+      <add as="align" value="center"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$2@ae6381"/>
+      <add as="fontSize" value="11"/>
+      <add as="fillColor" value="white"/>
+      <add as="shape" value="ellipse"/>
+      <add as="strokeColor" value="black"/>
+      <add as="verticalAlign" value="top"/>
+    </add>
+    <add as="parameterconnected">
+      <add as="verticalAlign" value="top"/>
+      <add as="labelPosition" value="right"/>
+      <add as="perimeter" value="com.mxgraph.view.mxPerimeter$2@ae6381"/>
+      <add as="strokeColor" value="black"/>
+      <add as="align" value="left"/>
+      <add as="shape" value="ellipse"/>
+      <add as="fillColor" value="#00FF00"/>
+      <add as="fontSize" value="11"/>
+    </add>
+  </mxStylesheet>
+  <mxCell as="defaultParent" id="1" parent="0"/>
+  <Array as="multiplicities"/>
+</org.barrelorgandiscovery.gui.etl.EtlMxGraph>
+ze" value="11"/>
+    </add>
+  </mxStylesheet>
+  <mxCell as="defaultParent" id="1" parent="0"/>
+  <Array as="multiplicities"/>
+</org.barrelorgandiscovery.gui.etl.EtlMxGraph>
