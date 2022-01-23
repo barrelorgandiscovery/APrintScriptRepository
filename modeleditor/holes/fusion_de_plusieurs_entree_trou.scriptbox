@@ -24,7 +24,7 @@ class T extends ModelGroovyScript {
    def nbconnexions = 3
    
    String getLabel() {
-      "Sucre pour fusionner les trous"
+      "Bloc pour fusionner les notes (trous)"
    }
 
 
