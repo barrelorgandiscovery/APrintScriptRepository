@@ -1,0 +1,66 @@
+import org.barrelorgandiscovery.model.steps.scripts.*;
+import org.barrelorgandiscovery.model.*;
+import org.barrelorgandiscovery.model.type.*;
+
+import org.barrelorgandiscovery.model.enhanced.*;
+
+import org.barrelorgandiscovery.virtualbook.*
+import org.barrelorgandiscovery.scale.*
+import org.barrelorgandiscovery.timed.*
+
+import org.barrelorgandiscovery.xml.*
+
+import java.io.File;
+
+
+class T extends ModelGroovyScript {
+
+   def console
+
+    
+   def parameters = []
+   
+   // nombre de connexions souhaité dans la boite, en entree
+   def nbconnexions = 3
+   
+   String getLabel() {
+      "Sucre pour fusionner les trous"
+   }
+
+
+   // cette fonction est appeleé par le model editor
+   // pour connaitre les paramètres et leur type
+   ModelParameter[] configureParameters() {
+   
+       parameters.clear()
+        
+       for(int i = 0 ; i < nbconnexions ; i ++ ) {
+         parameters << newParameter(true,"entree" + i ,new GenericSimpleType(Collection.class, [ ITimedLength.class ] as  Class[]))
+       
+       }
+   
+       
+       def r = [newParameter(false,"tous_les_trous_fusionnes",new GenericSimpleType(Collection.class, [ ITimedLength.class ] as  Class[] ))]
+       r.addAll(parameters)
+       return r
+   }
+
+   Map execute(Map m) {
+       // m contient les valeures des paramètres passés au processeur
+     
+       def trousdecales = [] as List
+       
+       parameters.each { p -> 
+       
+           if (m[p.name]) { 
+               trousdecales.addAll(m[p.name])
+           }
+           
+       }
+       
+       // on retourne le paramètre "book" contenant un objet Virtualbook
+       return [trousmerge: trousdecales]
+   }
+
+}
+new T(console:out) // le script retourne une instanciation de la classe
