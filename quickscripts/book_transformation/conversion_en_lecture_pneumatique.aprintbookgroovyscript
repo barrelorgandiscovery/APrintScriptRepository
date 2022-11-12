@@ -1,0 +1,21 @@
+// this script convert long notes into small one, 
+
+import org.barrelorgandiscovery.virtualbook.*
+
+holesSize = 5
+bridge = 2
+
+def scale = virtualbook.scale
+def holes = virtualbook.holesCopy
+holes.each {
+    def n = it
+    long l = 0
+    while (l < n.length)
+    {
+        virtualbook.addHole(new Hole(n.track, l + n.timestamp, scale.mmToTime(holesSize)))
+        l = l + scale.mmToTime(holesSize + bridge)
+    }
+    virtualbook.removeHole(n)
+}
+
+pianoroll.clearSelection()
