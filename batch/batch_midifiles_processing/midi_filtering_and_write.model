@@ -551,10 +551,4 @@ new T(console:out) // le script retourne une instanciation de la classe
   <mxCell as="defaultParent" id="1" parent="0"/>
   <Array as="multiplicities"/>
 </org.barrelorgandiscovery.gui.etl.EtlMxGraph>
-ph>
- value="11"/>
-    </add>
-  </mxStylesheet>
-  <mxCell as="defaultParent" id="1" parent="0"/>
-  <Array as="multiplicities"/>
-</org.barrelorgandiscovery.gui.etl.EtlMxGraph>
+

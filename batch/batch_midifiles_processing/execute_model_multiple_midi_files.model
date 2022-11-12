@@ -512,9 +512,4 @@ aWxlc19wcm9jZXNzaW5nL21pZGlfZmlsdGVyaW5nX2FuZF93cml0ZS5tb2RlbHcCAC94</value>
   <mxCell as="defaultParent" id="1" parent="0"/>
   <Array as="multiplicities"/>
 </org.barrelorgandiscovery.gui.etl.EtlMxGraph>
-ze" value="11"/>
-    </add>
-  </mxStylesheet>
-  <mxCell as="defaultParent" id="1" parent="0"/>
-  <Array as="multiplicities"/>
-</org.barrelorgandiscovery.gui.etl.EtlMxGraph>
+
