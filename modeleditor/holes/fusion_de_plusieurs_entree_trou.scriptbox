@@ -59,7 +59,7 @@ class T extends ModelGroovyScript {
        }
        
        // on retourne le paramètre "book" contenant un objet Virtualbook
-       return [trousmerge: trousdecales]
+       return [tous_les_trous_fusionnes: trousdecales]
    }
 
 }
