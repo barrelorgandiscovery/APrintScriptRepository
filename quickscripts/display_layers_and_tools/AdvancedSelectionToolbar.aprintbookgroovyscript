@@ -1,0 +1,183 @@
+import org.barrelorgandiscovery.gui.aedit.*
+import org.barrelorgandiscovery.virtualbook.*
+
+import javax.swing.*
+import java.awt.event.*
+import java.awt.*
+
+import org.barrelorgandiscovery.gui.aedit.toolbar.*
+import org.barrelorgandiscovery.gui.aprintng.*
+
+
+println(services.version)
+
+if (services.version < "2020.12.666") {
+    throw new Exception("bad version, 2020.12.666 minimum required")
+}
+
+enum Mode {
+    Add,
+    Remove }
+
+
+class LineSelectionTool extends Tool {
+
+    def pianoroll
+    
+    // position actuelle de la souris
+    // utilisé pour l'affichage du texte
+    Integer currentX = 0
+    Integer currentY = 0
+    
+    // position courante sur le carton
+    // si null, on est pas dans une position connue sur la matrice du carton
+    def position
+    
+    Mode mode = Mode.Add
+   
+    
+    def void activated() {
+       //  JOptionPane.showMessageDialog(null,"activated " + pianoroll)
+    }
+    
+    def void unactivated() {
+     // JOptionPane.showMessageDialog(null,"unactivated")
+    }
+    
+    def void paintElements(Graphics g) {
+    
+        if (position != null) { // on est sur une position dans le carton
+            position.track; // piste matchée
+            position.position; // timestamp, in micros
+            
+            // calcul de la position de la piste en mm
+            def axis = pianoroll.trackToMM(position.track)
+            def debut =  pianoroll.timeToMM(position.position)
+            
+            def scale = pianoroll.virtualBook.scale
+            def hauteurPiste = scale.intertrackHeight
+            g.fillRect(pianoroll.convertCartonToScreenX(0 ), 
+                       pianoroll.convertCartonToScreenY(axis - hauteurPiste/2),
+                        pianoroll.MmToPixel(pianoroll.timeToMM(pianoroll.virtualBook.getLength())),
+                        pianoroll.MmToPixel(hauteurPiste))
+            String message = "add "
+            if (mode == Mode.Remove) {
+                message = "remove "
+            }
+            g.drawString(message + "to selection from piste" + position.track , currentX, currentY - 20)
+        }
+    }
+    
+    def void mouseMoved(MouseEvent e) {
+          currentX = e.x
+          currentY = e.y
+          // on question pour savoir sur quelle piste on est
+          // et à quel horodatage dans le carton
+          position = pianoroll.query(e.x, e.y)
+          
+          if ((e.getModifiersEx() & MouseEvent.SHIFT_DOWN_MASK) != 0) {
+              mode = Mode.Add
+          } else if ((e.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) != 0) {
+              mode = Mode.Remove
+          }
+          
+          // on demande le réaffichage pour que le dessin
+          // se fasse
+          pianoroll.repaint()
+    }
+   
+    def void mouseReleased(MouseEvent e) {
+
+
+         if (position != null) { // on est sur une position dans le carton
+            position.track; // piste matchée
+            position.position; // timestamp, in micros
+            
+            def holes = pianoroll.virtualBook.findHoles(0L, pianoroll.virtualBook.getLength(), position.track, position.track)
+            holes.each { h ->
+                try {
+                   if (mode == Mode.Remove) {
+                       pianoroll.removeFromSelection(h)
+                   } else {
+                       pianoroll.addToSelection(h)
+                   } 
+                } catch (Exception _e) {
+                    println(_e);
+                }
+            }
+            pianoroll.repaint()
+            
+         }
+
+
+/*
+        double p =  pianoroll.convertScreenXToCarton(currentX)
+        def scale = pianoroll.virtualBook.scale
+
+            try {
+              pianoroll.startEventTransaction();
+                    try {
+
+                       def us = pianoroll.undoStack
+                       us.push(new GlobalVirtualBookUndoOperation(pianoroll.virtualBook, "Undo Cluster", pianoroll));
+                                  
+                       for (int i = 0 ; i < scale.trackNb ; i ++) {
+                            // definition de la position du "trou", ou "matière à remettre sur le carton"
+                            def h = new Hole(i, pianoroll.MMToTime(p), pianoroll.MMToTime(tailleTrou))
+                             
+                                if (e.button == MouseEvent.BUTTON1) {
+                                    // on a clické sur le bouton gauche, on découpe le carton
+                                    pianoroll.virtualBook.addAndMerge(h)                        
+                                } else if (e.button == MouseEvent.BUTTON3) {
+                                    // on a clické sur le bouton droit, on remet de la matière
+                                    pianoroll.virtualBook.cutHoles(h)
+                                }
+                    } // for
+                } finally {
+                    pianoroll.endEventTransaction()
+                }
+                // pianoroll.repaint()
+            } catch(Throwable t) {
+                    // en cas d'erreur, on l'affiche
+                    JOptionPane.showMessageDialog(null,t.message)
+            }
+            */
+
+    }
+    
+    void keyTyped(KeyEvent e) {
+        // on a appuyé sur une touche
+        // JOptionPane.showMessageDialog(null,e.keyChar)
+       /* if (e.keyChar == '+') {
+            tailleTrou = tailleTrou + 1
+            pianoroll.repaint()
+        } else if (e.keyChar == '-') {
+            tailleTrou = tailleTrou -1
+            pianoroll.repaint()
+        }
+        */
+    }
+}
+
+// création de la barre d'outils
+
+def tb = new APrintNGToolAwareToolbar("AdvancedSelectionToolbar", pianoroll)
+
+
+def t = new LineSelectionTool( pianoroll: pianoroll  )
+
+// ajout de l'outil dans la barre
+def btn = tb.addTool(t, "Selection Piste")
+
+// ajout de la barre dans l'interface
+toolbarspanel.add(tb);
+
+toolbarspanel.revalidate()
+toolbarspanel.repaint()
+
+
+void
+
+
+
+
