@@ -1,0 +1,84 @@
+import org.barrelorgandiscovery.model.steps.scripts.*;
+import org.barrelorgandiscovery.model.type.*;
+import org.barrelorgandiscovery.model.*;
+import org.barrelorgandiscovery.model.enhanced.*;
+
+import org.barrelorgandiscovery.virtualbook.*
+import org.barrelorgandiscovery.xml.*
+
+import java.io.File;
+import java.util.*
+
+class T extends ModelGroovyScript {
+
+   def console
+
+   String getLabel() { "Registre-conditionnels" }
+   
+   def nbpistes = 10
+   def e = []
+   def t1 = []
+   def t2 = []
+   
+   // cette fonction est appelee par le model editor
+   // pour connaitre les parametres et leur type
+   ModelParameter[] configureParameters() {
+       e = []
+       t1 = []
+       t2 = []
+       for(int i = 0; i < nbpistes ; i ++ ) {
+           def param =  newParameter(true,"piste-" + i , new GenericSimpleType(Collection.class, [HoleWithScale.class ] as Class[])) 
+           param.optional = true
+           e << param
+           t1 <<   newParameter(false,"piste-" + i + "-registre-active", new GenericSimpleType(Collection.class, [HoleWithScale.class ] as Class[])) 
+           t2 <<  newParameter(false,"piste-" + i + "-non-active", new GenericSimpleType(Collection.class, [HoleWithScale.class ] as Class[])) 
+           
+       }
+   
+       [  newParameter(true,"book",newJavaType(VirtualBook.class)),
+       newParameter(true, "Jeu", newJavaType(String.class)),
+       newParameter(true, "Registre", newJavaType(String.class))
+        ] + e + t1  + t2
+   }
+
+   Map execute(Map m) {
+   
+       def r = [:]
+       VirtualBook vb = m["book"]
+       String jeu = m["Jeu"]
+       String registre = m["Registre"]
+       console.println("jeu : ${jeu}")
+       console.println("registre : ${registre}")    
+          
+       
+       for(int i = 0; i < nbpistes ; i ++ ) {
+           def last = vb.getLength()
+           def sections = vb.getOrComputeRegistrationSections()
+           def n = m["piste-" + i]
+           if (n == null) n = [] 
+           def nactivated = new HashSet<Hole>()
+           
+           for (int j = sections.length - 1 ; j > 0 ; j --) {
+               def section = sections[j]               
+               // filter on range
+               def s = n.findAll { h -> h.timestamp + h.timeLength < section.getStart() }
+               s = s + n.findAll { h -> h.timestamp > last }
+               if (registre in section.getRegisters(jeu)) {
+                   console.println("not in : ${s}")    
+       
+                   nactivated = nactivated + (n - s)
+               }
+               last = section.getStart()
+           }
+           
+           r["piste-" + i + "-registre-active"] = nactivated
+           r["piste-" + i + "-non-active"] = (n - nactivated)
+       
+       }
+       
+     
+       return r
+   }
+
+}
+new T(console:out) // le script retourne une instanciation de la classe
