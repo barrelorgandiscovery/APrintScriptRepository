@@ -1,0 +1,107 @@
+
+//
+// script de reduction de la longueur des trous, 
+// à la fois dans un fichier midi, 
+// ou dans un book
+//
+
+import org.barrelorgandiscovery.model.steps.scripts.*;
+import org.barrelorgandiscovery.model.*;
+import org.barrelorgandiscovery.model.type.*;
+
+import org.barrelorgandiscovery.model.enhanced.*;
+
+import org.barrelorgandiscovery.virtualbook.*
+import org.barrelorgandiscovery.scale.*
+import org.barrelorgandiscovery.timed.*
+
+import org.barrelorgandiscovery.xml.*
+
+import java.io.File;
+
+
+class T extends ModelGroovyScript {
+
+   def console
+   
+   def reduction_mm = 0.1 // 0.1 s
+   
+   def speed = 60.0
+   
+   double time_to_mm(long t) {
+       return (((double) t) * speed) / 1000000; 
+   }
+   
+   long mm_to_time(double mm) {
+       return (long)(mm / speed * 1000000)
+   }
+   
+   String getLabel() {
+       return "Reduction de notes midi ou trous cartons de 2mm"
+   }
+   
+   // cette fonction est appeleé par le model editor
+   // pour connaitre les paramètres et leur type
+   ModelParameter[] configureParameters() {
+         [
+             
+             newParameter(true,"trous",new GenericSimpleType(Collection.class, [ITimedStamped.class ] as  Class[])),
+            
+             newParameter(false,"trous_reduits",new GenericSimpleType(Collection.class, [ ITimedStamped.class ] as  Class[] ))
+             
+         ]
+   }
+   
+   ITimedLength changeLength(ITimedLength h, long newLength) {
+          
+       if (h instanceof org.barrelorgandiscovery.model.enhanced.HoleWithScale) {
+           org.barrelorgandiscovery.model.enhanced.HoleWithScale a = (org.barrelorgandiscovery.model.enhanced.HoleWithScale)h
+           org.barrelorgandiscovery.virtualbook.Hole nh = 
+                 new org.barrelorgandiscovery.virtualbook.Hole(a.track, a.timestamp, newLength)
+               
+           return new org.barrelorgandiscovery.model.enhanced.HoleWithScale(nh, a.scale)
+                               
+       } else if (h instanceof org.barrelorgandiscovery.virtualbook.Hole) {
+       
+           return new org.barrelorgandiscovery.virtualbook.Hole(a.track, a.timestamp, newLength)
+       
+       } else if (h instanceof org.barrelorgandiscovery.virtualbook.transformation.importer.MidiNote) {
+       
+           // long timestamp, long longueur, int midinote, int track, int channel
+           return new org.barrelorgandiscovery.virtualbook.transformation.importer.MidiNote(
+                   h.timestamp, 
+                   h.timeLength, h.midiNote, h.track, h.channel)       
+       } 
+       
+       // else 
+       
+       h
+   }
+
+   Map execute(Map m) {
+       // m contient les valeures des paramètres passés au processeur
+     
+       def trousdecales = [] as List
+       def input = m["trous"] 
+       input.each { h->  
+           if (h instanceof ITimedLength) {
+               // pour chaque objet ayant un timing
+               double taille_trou = time_to_mm(h.timeLength)
+               
+               // reduction
+               taille_trou = Math.max(3.0, taille_trou - reduction_mm)
+               
+               
+               trousdecales.add(changeLength(h, mm_to_time(taille_trou)))
+           } else {
+                trousdecales.add(h)
+           }
+       }
+          
+       // on retourne le paramètre "book" contenant un objet Virtualbook
+       return [trous_reduits: trousdecales]
+   }
+
+}
+new T(console:out) // le script retourne une instanciation de la classe
+
