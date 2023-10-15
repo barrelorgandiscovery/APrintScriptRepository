@@ -7,6 +7,7 @@ jobs:
           python3 update_content.py
   deploy:
     needs: build
+    runs-on: ubuntu-latest
     # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
     permissions:
       pages: write      # to deploy to Pages
