@@ -1,0 +1,77 @@
+import org.barrelorgandiscovery.virtualbook.transformation.importer.*
+
+// transposition en masse, de fichiers midi
+
+////// MODIFIER ICI le chemin du répertoire, entre les triples guillemets, 
+
+////// après, appuyer sur executer ... 
+
+///// le resultat est un sous répertoire du répertoire donné, nommé T+[transposition]
+
+def folder = new File("""/home/use/aprint_contributions/gerard/2024-01_transposition/midi""")
+
+// operation de transposition
+
+def deplace_3s(File fichiermidi, File outputFolder) {
+        
+    def fichierMidi = MidiFileIO.read(fichiermidi)
+    def notes = fichierMidi.findAll { it instanceof MidiNote  }
+    notes.sort { a,b -> a.timeStamp <=> b.timeStamp }
+    
+    // print notes
+    def timing_debut = notes[0].timeStamp
+    // print timing_debut
+    
+    def fichier_transpose = fichierMidi.collect { it ->
+        if (it instanceof MidiNote) {
+            /*
+            public MidiNote(long timestamp,
+                long longueur,
+                int midinote,
+                int track,
+                int channel)
+              */  
+            return new MidiNote(it.timeStamp - timing_debut + 3000000, 
+                                it.length,
+                                it.midiNote, 
+                                it.track,
+                                it.channel)
+        } else {
+            return it
+        }
+    }
+    
+    fichierMidi.clear()
+    fichierMidi.addAll(fichier_transpose)
+
+
+    def sequence = MidiFileIO.createSequence(fichierMidi)
+    def outputFile = new File(outputFolder, "s_" + fichiermidi.name)
+    def outputStream =  new FileOutputStream(outputFile)
+    MidiFileIO.writeMidi(sequence, 1, outputStream)
+    outputStream.close()
+}
+
+assert folder != null
+assert folder.directory
+
+File output = new File(folder, "3s")
+output.mkdirs()
+
+for (File f: folder.listFiles()) {
+    if (f.file && f.name.toLowerCase().endsWith(".mid")) {
+        print("traitement du fichier ${f}\n")
+        try {
+            deplace_3s(f, output)
+        } catch(Exception ex) {
+            print("ERREUR DANS LE TRAITEMENT DU FICHIER ${f}\n")
+            //ex.printStackTrace()
+            throw ex
+        }
+    }
+
+}
+
+print("terminé")
+
+

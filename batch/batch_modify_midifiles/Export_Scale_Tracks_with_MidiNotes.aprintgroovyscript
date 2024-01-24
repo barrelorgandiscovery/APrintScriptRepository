@@ -1,0 +1,12 @@
+
+ins = services.repository.getInstrument("27 / 29 Flutes Jerome")
+
+scale = ins.scale
+
+c=0
+scale.tracksDefinition.each {
+   
+   print(c + ":" + it.midiNote + ",\n")
+   c=c+1
+
+}

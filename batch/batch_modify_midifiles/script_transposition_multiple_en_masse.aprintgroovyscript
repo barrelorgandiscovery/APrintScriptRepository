@@ -1,0 +1,72 @@
+
+import org.barrelorgandiscovery.virtualbook.transformation.importer.*
+
+// transposition en masse, de fichiers midi
+
+////// MODIFIER ICI le chemin du répertoire, entre les triples guillemets, 
+
+////// après, appuyer sur executer ... 
+
+///// le resultat est un sous répertoire du répertoire donné, nommé T+[transposition]
+
+def folder = new File("""/home/use/aprint_contributions/gerard/2024-01_transposition/midi""")
+
+
+transposition = -10
+
+// operation de transposition
+
+def transpose(File fichiermidi, File outputFolder) {
+    def fichierMidi = MidiFileIO.read(fichiermidi)
+    def fichierMidi_transpose = fichierMidi.collect { it ->
+        if (it instanceof MidiNote) {
+            /*
+            public MidiNote(long timestamp,
+                long longueur,
+                int midinote,
+                int track,
+                int channel)
+              */  
+            return new MidiNote(it.timeStamp, 
+                                it.length,
+                                it.midiNote + transposition, 
+                                it.track,
+                                it.channel)
+        } else {
+            return it
+        }
+    }
+    fichierMidi.clear()
+    fichierMidi.addAll(fichierMidi_transpose)
+    
+    def sequence = MidiFileIO.createSequence(fichierMidi)
+    def outputFile = new File(outputFolder, "t_" + fichiermidi.name)
+    def output =  new FileOutputStream(outputFile)
+    MidiFileIO.writeMidi(sequence, 1, output)
+    output.close()
+}
+
+assert folder != null
+assert folder.directory
+
+File output = new File(folder, "T" + transposition)
+output.mkdirs()
+
+for (File f: folder.listFiles()) {
+    if (f.file && f.name.toLowerCase().endsWith(".mid")) {
+        print("traitement du fichier ${f}\n")
+        try {
+            transpose(f, output)
+        } catch(Exception ex) {
+            print("ERREUR DANS LE TRAITEMENT DU FICHIER ${f}\n")
+            //ex.printStackTrace()
+            throw ex
+        }
+    }
+
+}
+
+print("terminé")
+
+
+
