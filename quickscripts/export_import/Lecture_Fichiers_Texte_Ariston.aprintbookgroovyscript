@@ -1,0 +1,26 @@
+import org.barrelorgandiscovery.virtualbook.*
+// read file 
+
+
+new File("/home/use/aprint_contributions/gerard/2024-04-04_ariston/3873_R9HS_EX-w.txt").withReader('UTF-8') { reader ->
+def line
+def track = 0
+def conversion = 60 * 1000000 / 360
+    while ((line = reader.readLine()) != null) { 
+        println "${line}"
+        def matcher =  line =~ /([0-9]+.[0-9]+)\s([0-9]+.[0-9]+)/
+        if (matcher.matches()) {
+            first = Double.parseDouble(matcher.group(1))
+            second = Double.parseDouble(matcher.group(2))
+            println "${first} ${second}"
+            virtualbook.addHole(new Hole(track, (long) first * conversion, (long) (second - first) * conversion))
+        }
+        
+        def matcherline = line =~ /[#]([0-9]+)/
+        if (matcherline.matches()) {
+            track = Integer.parseInt(matcherline.group(1)) - 1
+            println "track ${track}"
+        }
+        
+    }
+}
