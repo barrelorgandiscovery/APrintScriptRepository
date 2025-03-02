@@ -1,0 +1,99 @@
+import org.barrelorgandiscovery.model.steps.scripts.*;
+import org.barrelorgandiscovery.model.*;
+import org.barrelorgandiscovery.model.type.*;
+import org.barrelorgandiscovery.timed.*;
+import org.barrelorgandiscovery.virtualbook.*
+import org.barrelorgandiscovery.xml.*
+import java.util.*
+import org.barrelorgandiscovery.model.enhanced.*
+
+
+import java.io.File;
+
+class T extends ModelGroovyScript {
+
+   def console
+
+   String getLabel() { "Reduction des trous" }
+   
+   ModelParameter[] configureParameters() {
+       [ newParameter(true,"tracksIn",
+             new CompositeType([
+                new GenericSimpleType(Collection.class, [ HoleWithScale.class ] as Class[]),
+                newJavaType(VirtualBook.class)] as ModelType[], "cartonOrHole",""  )),
+                
+         newParameter(true,"reductionMm",newJavaType(Double.class)), 
+         newParameter(true,"minHoleInMm",newJavaType(Double.class)),          
+                
+         newParameter(false,"tracksOut",
+          new CompositeType([
+                new GenericSimpleType(Collection.class, [ HoleWithScale.class ] as Class[]),
+                newJavaType(VirtualBook.class)] as ModelType[], "cartonOrHole",""  )),
+         newParameter(false, "virtualbookOut", newJavaType(VirtualBook.class))
+         ]
+   }
+
+   Map execute(Map m) {
+   
+      
+       Collection<Hole> inputHoles = []
+       def v = m["tracksIn"]
+       def vb = null
+       if (v instanceof VirtualBook) {
+          inputHoles = v.getHolesCopy()          
+          vb = new VirtualBook(v.scale)
+       } else if (v instanceof Collection) {
+          inputHoles = v
+          if (inputHoles.size() == 0) {
+             throw new Exception("error, cannot determine the scale from and empty holeWithScale list")
+          }
+          def h = inputHoles[0]
+          vb = new VirtualBook(h.scale)
+       } else {
+          throw new Exception("unsupported type :" + v)
+       }
+       
+       def minHole = vb.scale.mmToTime(m["minHoleInMm"])
+   
+  
+       // transform the elements
+       def col = [] as List
+       
+       console.println("hello")
+       def l = vb.scale.mmToTime(m["reductionMm"])
+       for (int i = 0 ; i < inputHoles.size(); i ++) {
+          def c = inputHoles[i]
+          console.println(c)
+          if (c instanceof HoleWithScale) {
+            
+                 def nl = c.timeLength - l
+                 if (nl < minHole) {     
+                     nl = minHole
+                 }          
+                 def nh = new Hole(c.track, c.timestamp, nl) 
+                 col.add( new HoleWithScale(nh, c.scale))
+             
+             
+          } else if (c instanceof Hole) {
+                 def nl = c.timeLength - l
+                 if (nl < minHole) {     
+                     nl = minHole
+                 }   
+                 col.add( new Hole(c.track, c.timestamp, nl) )
+                            
+          } else {
+             throw new Exception("unsupported type : " + c)
+          }
+       
+       
+       }
+       console.println("collect holes")
+       col.each { vb.addHole(it) } 
+       
+       
+       return [tracksOut:inputHoles, virtualbookOut: vb]
+   }
+
+}
+new T(console:out) // le script retourne une instanciation de la classe
+
