@@ -7,7 +7,7 @@ jobs:
       - run: |
           python3 update_content.py
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v4
         with:
           path: ./
   deploy:
